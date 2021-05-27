@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>OpenGL学习笔记——光照 - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="OpenGL学习笔记——光照" />
+<meta property="og:description" content="1. 颜色 图形学中物体所呈现的颜色可以理解为光照射到该物体上后，该物体所反射出来的颜色，即物体从一个光源反射各个颜色分量的大小。 1 2 3 4 // 光的颜" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" /><meta property="og:image" content="https://ABbbbbigCat.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-26T03:40:39&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-26T03:40:39&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://ABbbbbigCat.github.io/logo.png"/>
+
+<meta name="twitter:title" content="OpenGL学习笔记——光照"/>
+<meta name="twitter:description" content="1. 颜色 图形学中物体所呈现的颜色可以理解为光照射到该物体上后，该物体所反射出来的颜色，即物体从一个光源反射各个颜色分量的大小。 1 2 3 4 // 光的颜"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" /><link rel="prev" href="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" /><link rel="next" href="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "OpenGL学习笔记——光照",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/ABbbbbigCat.github.io\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7\/"
+        },"genre": "posts","keywords": "OpenGL学习笔记","wordcount":  5802 ,
+        "url": "https:\/\/ABbbbbigCat.github.io\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7\/","datePublished": "2021-05-26T03:40:39+08:00","dateModified": "2021-05-26T03:40:39+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/post/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/post/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">OpenGL学习笔记——光照</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-26">2021-05-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 5802 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 12 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#21-环境光">2.1 环境光</a></li>
+    <li><a href="#22-漫反射">2.2 漫反射</a>
+      <ul>
+        <li><a href="#221-法线转换为世界坐标系">2.2.1 法线转换为世界坐标系</a></li>
+      </ul>
+    </li>
+    <li><a href="#23-镜面反射">2.3 镜面反射</a></li>
+    <li><a href="#24-基于biiion-phong模型的片元着色器">2.4 基于BIIion-Phong模型的片元着色器</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#51-平行光">5.1 平行光</a></li>
+    <li><a href="#52-点光源">5.2 点光源</a>
+      <ul>
+        <li><a href="#521-衰减">5.2.1 衰减</a></li>
+        <li><a href="#522-选值">5.2.2 选值</a></li>
+        <li><a href="#523-实现衰减">5.2.3 实现衰减</a></li>
+      </ul>
+    </li>
+    <li><a href="#54-聚光">5.4 聚光</a>
+      <ul>
+        <li><a href="#541-聚光的定义">5.4.1 聚光的定义</a></li>
+        <li><a href="#52-手电筒">5.2 手电筒</a></li>
+        <li><a href="#53-平滑软化边缘">5.3 平滑/软化边缘</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="1-颜色">1. 颜色</h1>
+<p>图形学中物体所呈现的颜色可以理解为光照射到该物体上后，该物体所反射出来的颜色，即<strong>物体从一个光源反射各个颜色分量的大小</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 光的颜色*物体颜色 = 物体反射处的颜色
+glm::vec3 lightColor(0.33f, 0.42f, 0.18f);
+glm::vec3 toyColor(1.0f, 0.5f, 0.31f);
+glm::vec3 result = lightColor * toyColor; // = (0.33f, 0.21f, 0.06f);
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="2-基础光照">2. 基础光照</h1>
+<p>最经典的（基础的）光照模型是Bllin-Phong光照模型，该模型定义了环境光(ambient), 漫反射(diffuse)和高光(specular)，它们共同作用于物体来为物体着色。</p>
+<h2 id="21-环境光">2.1 环境光</h2>
+<p>环境光由我们自己定义</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="c1">// 环境光
+</span><span class="c1"></span><span class="kt">float</span> <span class="n">ambientStrength</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+<span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">ambientStrength</span> <span class="o">*</span> <span class="n">lightColor</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="22-漫反射">2.2 漫反射</h2>
+<p>漫反射的计算需要知道物体表面的<strong>法向量</strong>（垂直于片段表面的一个向量，我们只需要定义三角形顶点的法向量，任一片段表面的法向量可以由插值计算得出），以及定义的<strong>光线</strong>。为了得到余弦值$cos\theta$，需要保证光线和法线都是单位向量，故需要注意对向量进行标准化。
+$$L_d =k_d(I/r^2)max(0,n·I)$$
+上式将光视作强度（实际上这种说法并不符合物理学定义，因为很难给光的强度赋予实际的物理意义。由物理意义的光源需要借助辐射度量学的知识），其中$k_d$代表漫反射系数，即物体材质颜色。$I/r^2$表示光的强度随距离而衰减。然而，若$I$是类似于太阳的存在，则可以近似的忽略光线强度衰减。我们通常将平行于场景的<strong>平行光</strong>定义为类似于太阳的不会发生衰减的光，而对于<strong>点光源</strong>则认为它会随着距离逐渐衰减。（后续代码中点光源没有考虑衰减只是为了便于学习）</p>
+<h3 id="221-法线转换为世界坐标系">2.2.1 法线转换为世界坐标系</h3>
+<p>考虑到片段着色器中的计算都是在世界坐标系中进行的，相应的，法线也应该转换为世界坐标系。不过这不能简单的乘以转换矩阵。
+首先，法向量只是一个方向向量，不能表达空间中的特定位置。因此，如果我们打算把法向量乘以一个模型矩阵，我们就要从矩阵中移除位移部分，只选用模型矩阵左上角3×3的矩阵（可以把法向量的$w$分量设置为0，再乘以4×4矩阵）。对于法向量，我们只希望对它实施缩放和旋转变换。然而不等比缩放会导致法线不再垂直于片元表面，可以通过<strong>法线矩阵</strong>来修正这个错误，其定义为「模型矩阵左上角的逆矩阵的转置矩阵」。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">Normal = mat3(transpose(inverse(model))) * aNormal;
+</code></pre></td></tr></table>
+</div>
+</div><p><em>（注意：对于着色器而言，逆矩阵是一种开销较大的计算。这里选择在着色器中计算是出于学习原因。在实际的工程中，在绘制之前最好用CPU计算出法线矩阵，然后通过uniform把值传递给着色器（像模型矩阵一样））</em></p>
+<h2 id="23-镜面反射">2.3 镜面反射</h2>
+<p>镜面反射的结果受观察者（摄像机）影响，通过计算光线经过法线的反射向量与观察者向量之间的夹角，可以得出镜面反射的强度。考虑到这个强度通常较小区分不太明显，因此需要对夹角添加一个$p$次方（加大差异性）。$p$被称作反光度（shininess），其值越大，反光能力越强，散射越小，高光点就会越小。
+OpenGL内置的反射函数可以帮助我们轻松获得反射向量（冯模型，一个明显的问题是视角和反射光线的夹角可能大于90°导致高光为零）。我们也可以不计算反射向量，利用$normalize(I + v)$求半程向量$h$，通过$h·n$近似获得反射向量与观察者向量间的夹角（Blinn-Phong模型，避免了之前所说的高光为零的情况。对于反光度很小的物体，Blinn-Phong着色的渲染效果更加真实）。
+$$L_s=k_s(I/r^2)max(cos\alpha, 0)=k_s(I/r^2)max(h·n,0)$$</p>
+<h2 id="24-基于biiion-phong模型的片元着色器">2.4 基于BIIion-Phong模型的片元着色器</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#version 330 core
+</span><span class="cp"></span><span class="n">out</span> <span class="n">vec4</span> <span class="n">FragColor</span><span class="p">;</span>
+
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">lightPos</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">objectColor</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">lightColor</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">viewPos</span><span class="p">;</span>
+
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">FragPos</span><span class="p">;</span>
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">Normal</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// 环境光
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">ambientStrength</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">ambientStrength</span> <span class="o">*</span> <span class="n">lightColor</span><span class="p">;</span>
+
+    <span class="c1">// 漫反射
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">Normal</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">lightDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">lightPos</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="n">lightDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">lightColor</span><span class="p">;</span>
+
+    <span class="c1">// 镜面光照
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">specularStrength</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">viewDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">viewPos</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">reflectDir</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">norm</span><span class="p">);</span>                 <span class="c1">// reflect()要求向量的方向从片元指向光源，这与lightDir正相反
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">viewDir</span><span class="p">,</span> <span class="n">reflectDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mi">32</span><span class="p">);</span>   <span class="c1">// 32是反光度，反光度越高，反射光的能力越强，散射得越少，高光点就会越小
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">specular</span> <span class="o">=</span> <span class="n">specularStrength</span> <span class="o">*</span> <span class="n">spec</span> <span class="o">*</span> <span class="n">lightColor</span><span class="p">;</span>
+
+    <span class="n">vec3</span> <span class="n">result</span> <span class="o">=</span> <span class="p">(</span><span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span> <span class="o">+</span> <span class="n">specular</span><span class="p">)</span> <span class="o">*</span> <span class="n">objectColor</span><span class="p">;</span>
+    <span class="n">FragColor</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>以上着色器（冯氏着色器）是在片元上进行着色，基础的光照模型也可以考虑在顶点进行着色（Gouraud着色）。其优势在于需要处理的点更少，效率高。然而，顶点着色器中的最终颜色值是仅仅只是那个顶点的颜色值，片段的颜色值是由插值光照颜色所得来的。结果就是这种光照看起来不会非常真实（甚至有些奇怪），除非使用了大量顶点。</p>
+<h1 id="3-材质">3. 材质</h1>
+<p>根据基础光照模型可知，物体最终的着色情况主要取决于光线和物体材质。通过将光线和物体材质进行封装，可以更加便捷的管理光照和材质。（然而，实际的物体材质很少会完全一致，这里只是最简单的模型）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="c1">// 封装了光与材质的片元着色器
+</span><span class="c1"></span><span class="cp">#version 330 core
+</span><span class="cp"></span>
+<span class="c1">// 定义物体材质
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">Material</span> <span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">ambient</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">specular</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">shininess</span><span class="p">;</span>
+<span class="p">};</span> 
+
+<span class="c1">// 定义光照情况
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">Light</span> <span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">position</span><span class="p">;</span>
+
+    <span class="n">vec3</span> <span class="n">ambient</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">specular</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">out</span> <span class="n">vec4</span> <span class="n">FragColor</span><span class="p">;</span>
+
+<span class="n">uniform</span> <span class="n">Material</span> <span class="n">material</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">Light</span> <span class="n">light</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">viewPos</span><span class="p">;</span>
+
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">FragPos</span><span class="p">;</span>
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">Normal</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// 环境光
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">material</span><span class="p">.</span><span class="n">ambient</span> <span class="o">*</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span><span class="p">;</span>
+
+    <span class="c1">// 漫反射
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">Normal</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">lightDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="n">lightDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="n">material</span><span class="p">.</span><span class="n">diffuse</span> <span class="o">*</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">light</span><span class="p">.</span><span class="n">diffuse</span><span class="p">;</span>
+
+    <span class="c1">// 镜面光照
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">viewDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">viewPos</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">reflectDir</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">norm</span><span class="p">);</span>                 <span class="c1">// reflect()要求向量的方向从片元指向光源，这与lightDir正相反
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">viewDir</span><span class="p">,</span> <span class="n">reflectDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">material</span><span class="p">.</span><span class="n">shininess</span><span class="p">);</span>   
+    <span class="n">vec3</span> <span class="n">specular</span> <span class="o">=</span> <span class="n">material</span><span class="p">.</span><span class="n">specular</span> <span class="o">*</span> <span class="n">spec</span> <span class="o">*</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span><span class="p">;</span>
+
+    <span class="n">vec3</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span> <span class="o">+</span> <span class="n">specular</span><span class="p">;</span>
+    <span class="n">FragColor</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="4-光照贴图">4. 光照贴图</h1>
+<p>上一章定义了一个最简单的材质模型，本章通过引入漫反射贴图和镜面光贴图以期让材质更加真实。漫反射贴图的引入可以让我们省略环境光材质的定义，因为环境光颜色在几乎所有情况下都等于漫反射颜色。镜面光贴图的引入是为了让物体的高光呈现更加真实的效果。
+下面的代码除了引入反射贴图和镜面光贴图外，还引入了发射光贴图（发射光贴图是指物体本身会发光的情况。冯氏模型中，我们虽然可以模仿物体本身发光，但却难以反映出这些光对于周围物体的着色影响。）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#version 330 core
+</span><span class="cp"></span>
+<span class="c1">// 定义物体材质
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">Material</span> <span class="p">{</span>
+    <span class="c1">// 移除环境光，因为环境光颜色在几乎所有情况下都等于漫反射颜色
+</span><span class="c1"></span>    <span class="n">sampler2D</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="c1">// 根据材质判断物体表面是否应该形成高光
+</span><span class="c1"></span>    <span class="n">sampler2D</span> <span class="n">specular</span><span class="p">;</span>
+    <span class="c1">// 物体自身发光贴图
+</span><span class="c1"></span>    <span class="n">sampler2D</span> <span class="n">emission</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">shininess</span><span class="p">;</span>
+<span class="p">};</span> 
+
+<span class="c1">// 定义光照情况
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">Light</span> <span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">position</span><span class="p">;</span>
+
+    <span class="n">vec3</span> <span class="n">ambient</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">specular</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">out</span> <span class="n">vec4</span> <span class="n">FragColor</span><span class="p">;</span>
+
+<span class="n">uniform</span> <span class="n">Material</span> <span class="n">material</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">Light</span> <span class="n">light</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">viewPos</span><span class="p">;</span>
+
+<span class="n">in</span> <span class="n">vec2</span> <span class="n">TexCoords</span><span class="p">;</span>          <span class="c1">// 获取材质坐标
+</span><span class="c1"></span><span class="n">in</span> <span class="n">vec3</span> <span class="n">FragPos</span><span class="p">;</span>
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">Normal</span><span class="p">;</span>
+
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// 环境光
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+
+    <span class="c1">// 漫反射
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">Normal</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">lightDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="n">lightDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">diffuse</span> <span class="o">*</span>  <span class="n">diff</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+
+    <span class="c1">// 镜面光照
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">viewDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">viewPos</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">reflectDir</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">norm</span><span class="p">);</span>                 <span class="c1">// reflect()要求向量的方向从片元指向光源，这与lightDir正相反
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">viewDir</span><span class="p">,</span> <span class="n">reflectDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">material</span><span class="p">.</span><span class="n">shininess</span><span class="p">);</span>   
+    <span class="n">vec3</span> <span class="n">specular</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span> <span class="o">*</span> <span class="n">spec</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">specular</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));;</span>
+
+    <span class="c1">// 发光
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">emission</span> <span class="o">=</span> <span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">emission</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">).</span><span class="n">rgb</span><span class="p">;</span>
+
+    <span class="n">vec3</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span> <span class="o">+</span> <span class="n">specular</span> <span class="o">+</span> <span class="n">emission</span><span class="p">;</span>
+    <span class="n">FragColor</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="5-透光物">5. 透光物</h1>
+<p>本部分主要讨论不同的光源类型对于着色的影响。</p>
+<h2 id="51-平行光">5.1 平行光</h2>
+<p>平行光模拟的是无限远处光源对于着色器的影响（类似于太阳）。因此再着色器中定义光源时，我们不再需要知道光源的位置，而是<strong>定义光照向量</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">struct Light {
+    // vec3 position; // 使用定向光就不再需要了
+    vec3 direction;
+
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+...
+void main()
+{
+  vec3 lightDir = normalize(-light.direction);
+  ...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>注意到上面求光照方向时，对方向取反，这是因为定义时通常习惯定义光到片元的向量。而在实际使用时，我们是用片元到光的向量来计算漫反射和镜面反射的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 设置光照方向（我们总是定义从光到场景的方向，很容易看出这是一个向下照射的光）
+lightingShader.setVec3(&#34;light.direction&#34;, -0.2f, -1.0f, -0.3f);
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="52-点光源">5.2 点光源</h2>
+<h3 id="521-衰减">5.2.1 衰减</h3>
+<p>与平行光不同，<em>点光源</em>(Point Light)需要考虑能量的衰减（Attenuation）。能量衰减与光源到着色点间的距离成反比，衰减公式的定义如下：
+$$F_{at}=1.0/(K_c + k_l*d+k_q*d^2)$$
+其中$k_c$是常数项衰减因子，始终定义为1.0，保证分母始终大于1.0。$k_l$和$k_q$分别为一次项和二次项。从定义可以看出，由于二次项的存在，光线会在大部分时候以线性的方式衰退，直到距离变得足够大，让二次项超过一次项，光的强度会以更快的速度下降。
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://img-blog.csdnimg.cn/20210417150443218.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        data-srcset="https://img-blog.csdnimg.cn/20210417150443218.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center, https://img-blog.csdnimg.cn/20210417150443218.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 1.5x, https://img-blog.csdnimg.cn/20210417150443218.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 2x"
+        data-sizes="auto"
+        alt="https://img-blog.csdnimg.cn/20210417150443218.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        title="光的衰减情况" /></p>
+<h3 id="522-选值">5.2.2 选值</h3>
+<p>衰减因子的选择是一个问题。正确地设定它们的值取决于很多因素：环境、希望光覆盖的距离、光的类型等。在大多数情况下，这都是经验的问题，以及适量的调整。下面这个表格显示了模拟一个（大概）真实的，覆盖特定半径（距离）的光源时，这些项可能取的一些值。第一列指定的是在给定的三项时光所能覆盖的距离。这些值是大多数光源很好的起始点，它们由<a href="http://wiki.ogre3d.org/tiki-index.php?page=-Point&#43;Light&#43;Attenuation" target="_blank" rel="noopener noreffer">Ogre3D</a>的Wiki所提供：</p>
+<table>
+<thead>
+<tr>
+<th>范围</th>
+<th>常数项</th>
+<th>一次项</th>
+<th>二次项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>7</td>
+<td>1.0</td>
+<td>0.7</td>
+<td>1.8</td>
+</tr>
+<tr>
+<td>13</td>
+<td>1.0</td>
+<td>0.35</td>
+<td>0.44</td>
+</tr>
+<tr>
+<td>20</td>
+<td>1.0</td>
+<td>0.22</td>
+<td>0.20</td>
+</tr>
+<tr>
+<td>32</td>
+<td>1.0</td>
+<td>0.14</td>
+<td>0.07</td>
+</tr>
+<tr>
+<td>50</td>
+<td>1.0</td>
+<td>0.09</td>
+<td>0.032</td>
+</tr>
+<tr>
+<td>65</td>
+<td>1.0</td>
+<td>0.07</td>
+<td>0.017</td>
+</tr>
+<tr>
+<td>100</td>
+<td>1.0</td>
+<td>0.045</td>
+<td>0.0075</td>
+</tr>
+<tr>
+<td>160</td>
+<td>1.0</td>
+<td>0.027</td>
+<td>0.0028</td>
+</tr>
+<tr>
+<td>200</td>
+<td>1.0</td>
+<td>0.022</td>
+<td>0.0019</td>
+</tr>
+<tr>
+<td>325</td>
+<td>1.0</td>
+<td>0.014</td>
+<td>0.0007</td>
+</tr>
+<tr>
+<td>600</td>
+<td>1.0</td>
+<td>0.007</td>
+<td>0.0002</td>
+</tr>
+<tr>
+<td>3250</td>
+<td>1.0</td>
+<td>0.0014</td>
+<td>0.000007</td>
+</tr>
+</tbody>
+</table>
+<h3 id="523-实现衰减">5.2.3 实现衰减</h3>
+<p>为了实现衰减，需要在着色器中光的定义里添加常数项，一次项和二次项。并根据衰减定义，将器附加到光照上。（对于环境光，我们可以将环境光分量保持不变，让环境光照不会随着距离减少，但是如果我们使用多于一个的光源，所有的环境光分量将会开始叠加，所以在这种情况下我们也希望衰减环境光照）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">struct Light 
+{
+	...
+
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+...
+void main
+{
+	...
+	float distance    = length(light.position - FragPos);
+	float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));
+	...
+	ambient  *= attenuation; 
+	diffuse  *= attenuation;
+	specular *= attenuation;
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="54-聚光">5.4 聚光</h2>
+<h3 id="541-聚光的定义">5.4.1 聚光的定义</h3>
+<p><em>聚光</em>（Spotlight）是位于环境中某个位置的光源，它只朝一个特定方向而不是所有方向照射光线。这样的结果就是只有在聚光方向的特定半径内的物体才会被照亮，其它的物体都会保持黑暗。聚光很好的例子就是路灯或手电筒。
+OpenGL中定义的聚光用一个世界空间位置、一个方向和一个<em>切光角</em>(Cutoff Angle)来表示的，切光角指定了聚光的半径（圆锥的半径）。对于每个片段，我们会计算片段是否位于聚光的切光方向之间（也就是在锥形内），如果是的话，我们就会相应地照亮片段。下面这张图会让你明白聚光是如何工作的：
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://img-blog.csdnimg.cn/2021041716511579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        data-srcset="https://img-blog.csdnimg.cn/2021041716511579.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center, https://img-blog.csdnimg.cn/2021041716511579.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 1.5x, https://img-blog.csdnimg.cn/2021041716511579.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 2x"
+        data-sizes="auto"
+        alt="https://img-blog.csdnimg.cn/2021041716511579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        title="在这里插入图片描述" /></p>
+<ul>
+<li>LightDir：从片段指向光源的向量。</li>
+<li>SpotDir：聚光所指向的方向。</li>
+<li>$ϕ$：指定了聚光半径的切光角。落在这个角度之外的物体都不会被这个聚光所照亮。</li>
+<li>$θ$：LightDir向量和SpotDir向量之间的夹角。在聚光内部的话θ值应该比ϕ值小。
+通过公式$LightDir·SpotDir$可以获取$θ$的余弦值，并将它与与切光角$ϕ$对比。（注意，这里用的是余弦值！）</li>
+</ul>
+<h3 id="52-手电筒">5.2 手电筒</h3>
+<p>手电筒（Flashlight）是一种典型的聚光光源，其位置和方向会随着玩家的位置和方向不断更新。（考虑到聚光的特性，其对环境光贡献通常较小，甚至没有）</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">// 定义手电筒
+struct Light {
+    vec3  position;
+    vec3  direction;
+    float cutOff;
+    ...
+};
+...
+void main() {
+	...
+	float theta = dot(lightDir, normalize(-light.direction));
+	if(theta &gt; light.cutOff) 		// //请记住，这里用的是角的余弦而不是度，所以这里用的是&gt;
+	{       
+	  // 执行光照计算
+	}
+	else  // 否则，使用环境光，让场景在聚光之外时不至于完全黑暗
+  		color = vec4(light.ambient * vec3(texture(material.diffuse, TexCoords)), 1.0);
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="53-平滑软化边缘">5.3 平滑/软化边缘</h3>
+<p>按照上述做法，最后得到的效果并不如意，这是因为光照的边缘处的差异过于极端。如下图所示，注意到光边缘处内外明暗十分显著，缺乏平滑过渡。为了让聚光效果显得更加真实，我们需要对边缘做平滑/软化处理。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://img-blog.csdnimg.cn/20210417174118924.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        data-srcset="https://img-blog.csdnimg.cn/20210417174118924.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center, https://img-blog.csdnimg.cn/20210417174118924.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 1.5x, https://img-blog.csdnimg.cn/20210417174118924.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 2x"
+        data-sizes="auto"
+        alt="https://img-blog.csdnimg.cn/20210417174118924.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        title="在这里插入图片描述" />
+为了创建一种看起来边缘平滑的聚光，我们需要模拟聚光有一个<em>内圆锥</em>(Inner Cone)和一个<em>外圆锥</em>(Outer Cone)。内圆锥即上面的光照部分，而外圆锥则主要起到让光从内圆锥逐渐变暗直到外圆锥边界的效果。
+为了创建一个外圆锥，我们只需要再定义一个余弦值来代表聚光方向向量和外圆锥向量（等于它的半径）的夹角。然后，如果一个片段处于内外圆锥之间，将会给它计算出一个0.0到1.0之间的强度值。如果片段在内圆锥之内，它的强度就是1.0，如果在外圆锥之外强度值就是0.0。公式如下（所有角度都代表余弦值）：
+$$I=({\theta}-{\gamma})/{\epsilon}$$</p>
+<p>其中，${\epsilon}={\phi}-{\gamma}$是内($\phi$)外($\gamma$)圆锥的余弦差值。最终的$I$值就是在当前片段聚光的强度。<a href="https://learnopengl-cn.github.io/02%20Lighting/05%20Light%20casters/#_8" target="_blank" rel="noopener noreffer">learnOpenGL</a>中给出了一些设置情况：</p>
+<table>
+<thead>
+<tr>
+<th>$\theta$</th>
+<th>$\theta$(角度)</th>
+<th>$\phi$</th>
+<th>$\phi$(角度)</th>
+<th>$\gamma$</th>
+<th>$\gamma$(角度)</th>
+<th>$\epsilon$</th>
+<th>$I$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.87</td>
+<td>30</td>
+<td>0.91</td>
+<td>25</td>
+<td>0.82</td>
+<td>35</td>
+<td>0.91 - 0.82 = 0.09</td>
+<td>0.87 - 0.82 / 0.09 = 0.56</td>
+</tr>
+<tr>
+<td>0.9</td>
+<td>26</td>
+<td>0.91</td>
+<td>25</td>
+<td>0.82</td>
+<td>35</td>
+<td>0.91 - 0.82 = 0.09</td>
+<td>0.9 - 0.82 / 0.09 = 0.89</td>
+</tr>
+<tr>
+<td>0.97</td>
+<td>14</td>
+<td>0.91</td>
+<td>25</td>
+<td>0.82</td>
+<td>35</td>
+<td>0.91 - 0.82 = 0.09</td>
+<td>0.97 - 0.82 / 0.09 = 1.67</td>
+</tr>
+<tr>
+<td>0.83</td>
+<td>34</td>
+<td>0.91</td>
+<td>25</td>
+<td>0.82</td>
+<td>35</td>
+<td>0.91 - 0.82 = 0.09</td>
+<td>0.83 - 0.82 / 0.09 = 0.11</td>
+</tr>
+<tr>
+<td>0.64</td>
+<td>50</td>
+<td>0.91</td>
+<td>25</td>
+<td>0.82</td>
+<td>35</td>
+<td>0.91 - 0.82 = 0.09</td>
+<td>0.64 - 0.82 / 0.09 = -2.0</td>
+</tr>
+<tr>
+<td>0.966</td>
+<td>15</td>
+<td>0.9978</td>
+<td>12.5</td>
+<td>0.953</td>
+<td>17.5</td>
+<td>0.966 - 0.953 = 0.0448</td>
+<td>0.966 - 0.953 / 0.0448 = 0.29</td>
+</tr>
+<tr>
+<td>根据以上定义，我们可以重新定义我们的片段着色器：</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">...
+struct Light {
+	...
+    float outerCutOff;		// 
+    ...
+};
+...
+void main		// 内外边缘的引入让我们不再需要判断着色片段是否在范围内，因为intensity的计算完成了这个工作
+{
+	...
+	float theta     = dot(lightDir, normalize(-light.direction));
+	float epsilon   = light.cutOff - light.outerCutOff;
+	float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);    // 把第一个参数约束在了0.0到1.0之间
+	...
+	// 将不对环境光做出影响，让它总是能有一点光
+	diffuse  *= intensity;
+	specular *= intensity;
+	...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>边缘软化后的效果：
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://img-blog.csdnimg.cn/20210417201855340.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        data-srcset="https://img-blog.csdnimg.cn/20210417201855340.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center, https://img-blog.csdnimg.cn/20210417201855340.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 1.5x, https://img-blog.csdnimg.cn/20210417201855340.png?x-oss-process=image/watermark%2ctype_ZmFuZ3poZW5naGVpdGk%2cshadow_10%2ctext_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==%2csize_16%2ccolor_FFFFFF%2ct_70#pic_center 2x"
+        data-sizes="auto"
+        alt="https://img-blog.csdnimg.cn/20210417201855340.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center"
+        title="软化后的结果" /></p>
+<h1 id="6-多光源">6. 多光源</h1>
+<p>多光源的本质就是多种类型的光共同作用于物体后产生的着色效果。我们可以将各种光源的着色过程封装为相应的函数，并累加其计算结果得到最后的着色效果。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#version 330 core
+</span><span class="cp"></span><span class="n">out</span> <span class="n">vec4</span> <span class="n">FragColor</span><span class="p">;</span>
+
+<span class="c1">// 定义材质
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">Material</span> <span class="p">{</span>
+    <span class="n">sampler2D</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">sampler2D</span> <span class="n">specular</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">shininess</span><span class="p">;</span>
+<span class="p">};</span> 
+
+<span class="c1">// 定义平行光
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">DirLight</span> <span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">direction</span><span class="p">;</span>
+	
+    <span class="n">vec3</span> <span class="n">ambient</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">specular</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 定义点光源
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">PointLight</span> <span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">position</span><span class="p">;</span>
+    
+    <span class="kt">float</span> <span class="n">constant</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">linear</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">quadratic</span><span class="p">;</span>
+	
+    <span class="n">vec3</span> <span class="n">ambient</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">specular</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// 定义聚光
+</span><span class="c1"></span><span class="k">struct</span> <span class="n">SpotLight</span> <span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">position</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">direction</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">cutOff</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">outerCutOff</span><span class="p">;</span>
+  
+    <span class="kt">float</span> <span class="n">constant</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">linear</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">quadratic</span><span class="p">;</span>
+  
+    <span class="n">vec3</span> <span class="n">ambient</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span><span class="p">;</span>
+    <span class="n">vec3</span> <span class="n">specular</span><span class="p">;</span>       
+<span class="p">};</span>
+
+<span class="cp">#define NR_POINT_LIGHTS 4
+</span><span class="cp"></span>
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">FragPos</span><span class="p">;</span>
+<span class="n">in</span> <span class="n">vec3</span> <span class="n">Normal</span><span class="p">;</span>
+<span class="n">in</span> <span class="n">vec2</span> <span class="n">TexCoords</span><span class="p">;</span>
+
+<span class="n">uniform</span> <span class="n">vec3</span> <span class="n">viewPos</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">DirLight</span> <span class="n">dirLight</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">PointLight</span> <span class="n">pointLights</span><span class="p">[</span><span class="n">NR_POINT_LIGHTS</span><span class="p">];</span>
+<span class="n">uniform</span> <span class="n">SpotLight</span> <span class="n">spotLight</span><span class="p">;</span>
+<span class="n">uniform</span> <span class="n">Material</span> <span class="n">material</span><span class="p">;</span>
+
+<span class="c1">// 函数定义
+</span><span class="c1"></span><span class="n">vec3</span> <span class="nf">CalcDirLight</span><span class="p">(</span><span class="n">DirLight</span> <span class="n">light</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">normal</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">viewDir</span><span class="p">);</span>
+<span class="n">vec3</span> <span class="nf">CalcPointLight</span><span class="p">(</span><span class="n">PointLight</span> <span class="n">light</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">normal</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">fragPos</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">viewDir</span><span class="p">);</span>
+<span class="n">vec3</span> <span class="nf">CalcSpotLight</span><span class="p">(</span><span class="n">SpotLight</span> <span class="n">light</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">normal</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">fragPos</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">viewDir</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>    
+    <span class="c1">// 属性
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">norm</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">Normal</span><span class="p">);</span>
+    <span class="n">vec3</span> <span class="n">viewDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">viewPos</span> <span class="o">-</span> <span class="n">FragPos</span><span class="p">);</span>
+    
+    <span class="c1">// 计算平行光
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">result</span> <span class="o">=</span> <span class="n">CalcDirLight</span><span class="p">(</span><span class="n">dirLight</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">viewDir</span><span class="p">);</span>
+    <span class="c1">// 计算点光源（由于有四个点光源，故计算四次）
+</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NR_POINT_LIGHTS</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">CalcPointLight</span><span class="p">(</span><span class="n">pointLights</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">norm</span><span class="p">,</span> <span class="n">FragPos</span><span class="p">,</span> <span class="n">viewDir</span><span class="p">);</span>    
+    <span class="c1">// 计算聚光
+</span><span class="c1"></span>    <span class="n">result</span> <span class="o">+=</span> <span class="n">CalcSpotLight</span><span class="p">(</span><span class="n">spotLight</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">FragPos</span><span class="p">,</span> <span class="n">viewDir</span><span class="p">);</span>    
+    
+    <span class="n">FragColor</span> <span class="o">=</span> <span class="n">vec4</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 计算平行光着色情况
+</span><span class="c1"></span><span class="n">vec3</span> <span class="nf">CalcDirLight</span><span class="p">(</span><span class="n">DirLight</span> <span class="n">light</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">normal</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">viewDir</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">lightDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="o">-</span><span class="n">light</span><span class="p">.</span><span class="n">direction</span><span class="p">);</span>
+    <span class="c1">// 漫反射
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">lightDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// 镜面反射
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">reflectDir</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">normal</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">viewDir</span><span class="p">,</span> <span class="n">reflectDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">material</span><span class="p">.</span><span class="n">shininess</span><span class="p">);</span>
+    <span class="c1">// 混合后结果
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">diffuse</span> <span class="o">*</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">vec3</span> <span class="n">specular</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">specular</span> <span class="o">*</span> <span class="n">spec</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">specular</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span> <span class="o">+</span> <span class="n">specular</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 计算点光源着色情况
+</span><span class="c1"></span><span class="n">vec3</span> <span class="nf">CalcPointLight</span><span class="p">(</span><span class="n">PointLight</span> <span class="n">light</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">normal</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">fragPos</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">viewDir</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">lightDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">fragPos</span><span class="p">);</span>
+    <span class="c1">// 漫反射
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">lightDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// 镜面反射
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">reflectDir</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">normal</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">viewDir</span><span class="p">,</span> <span class="n">reflectDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">material</span><span class="p">.</span><span class="n">shininess</span><span class="p">);</span>
+    <span class="c1">// 衰减因子
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">fragPos</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">attenuation</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">constant</span> <span class="o">+</span> <span class="n">light</span><span class="p">.</span><span class="n">linear</span> <span class="o">*</span> <span class="n">distance</span> <span class="o">+</span> <span class="n">light</span><span class="p">.</span><span class="n">quadratic</span> <span class="o">*</span> <span class="p">(</span><span class="n">distance</span> <span class="o">*</span> <span class="n">distance</span><span class="p">));</span>    
+    <span class="c1">// 混合后结果
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">diffuse</span> <span class="o">*</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">vec3</span> <span class="n">specular</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">specular</span> <span class="o">*</span> <span class="n">spec</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">specular</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">ambient</span> <span class="o">*=</span> <span class="n">attenuation</span><span class="p">;</span>
+    <span class="n">diffuse</span> <span class="o">*=</span> <span class="n">attenuation</span><span class="p">;</span>
+    <span class="n">specular</span> <span class="o">*=</span> <span class="n">attenuation</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span> <span class="o">+</span> <span class="n">specular</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 计算聚光着色情况
+</span><span class="c1"></span><span class="n">vec3</span> <span class="nf">CalcSpotLight</span><span class="p">(</span><span class="n">SpotLight</span> <span class="n">light</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">normal</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">fragPos</span><span class="p">,</span> <span class="n">vec3</span> <span class="n">viewDir</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">vec3</span> <span class="n">lightDir</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">fragPos</span><span class="p">);</span>
+    <span class="c1">// 漫反射
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">diff</span> <span class="o">=</span> <span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">normal</span><span class="p">,</span> <span class="n">lightDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// 镜面反射
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">reflectDir</span> <span class="o">=</span> <span class="n">reflect</span><span class="p">(</span><span class="o">-</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">normal</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">spec</span> <span class="o">=</span> <span class="n">pow</span><span class="p">(</span><span class="n">max</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">viewDir</span><span class="p">,</span> <span class="n">reflectDir</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span> <span class="n">material</span><span class="p">.</span><span class="n">shininess</span><span class="p">);</span>
+    <span class="c1">// 衰减因子
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">position</span> <span class="o">-</span> <span class="n">fragPos</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">attenuation</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">light</span><span class="p">.</span><span class="n">constant</span> <span class="o">+</span> <span class="n">light</span><span class="p">.</span><span class="n">linear</span> <span class="o">*</span> <span class="n">distance</span> <span class="o">+</span> <span class="n">light</span><span class="p">.</span><span class="n">quadratic</span> <span class="o">*</span> <span class="p">(</span><span class="n">distance</span> <span class="o">*</span> <span class="n">distance</span><span class="p">));</span>    
+    <span class="c1">// 聚光强度
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">dot</span><span class="p">(</span><span class="n">lightDir</span><span class="p">,</span> <span class="n">normalize</span><span class="p">(</span><span class="o">-</span><span class="n">light</span><span class="p">.</span><span class="n">direction</span><span class="p">));</span> 
+    <span class="kt">float</span> <span class="n">epsilon</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">cutOff</span> <span class="o">-</span> <span class="n">light</span><span class="p">.</span><span class="n">outerCutOff</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">intensity</span> <span class="o">=</span> <span class="n">clamp</span><span class="p">((</span><span class="n">theta</span> <span class="o">-</span> <span class="n">light</span><span class="p">.</span><span class="n">outerCutOff</span><span class="p">)</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="c1">// 衰减因子
+</span><span class="c1"></span>    <span class="n">vec3</span> <span class="n">ambient</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">ambient</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">vec3</span> <span class="n">diffuse</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">diffuse</span> <span class="o">*</span> <span class="n">diff</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">diffuse</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">vec3</span> <span class="n">specular</span> <span class="o">=</span> <span class="n">light</span><span class="p">.</span><span class="n">specular</span> <span class="o">*</span> <span class="n">spec</span> <span class="o">*</span> <span class="n">vec3</span><span class="p">(</span><span class="n">texture</span><span class="p">(</span><span class="n">material</span><span class="p">.</span><span class="n">specular</span><span class="p">,</span> <span class="n">TexCoords</span><span class="p">));</span>
+    <span class="n">ambient</span> <span class="o">*=</span> <span class="n">attenuation</span> <span class="o">*</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="n">diffuse</span> <span class="o">*=</span> <span class="n">attenuation</span> <span class="o">*</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="n">specular</span> <span class="o">*=</span> <span class="n">attenuation</span> <span class="o">*</span> <span class="n">intensity</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">ambient</span> <span class="o">+</span> <span class="n">diffuse</span> <span class="o">+</span> <span class="n">specular</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-05-26</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-via="xxxx" data-hashtags="OpenGL学习笔记"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-hashtag="OpenGL学习笔记"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://ABbbbbigCat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">OpenGL学习笔记</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="prev" rel="prev" title="OpenGL学习笔记——基础部分"><i class="fas fa-angle-left fa-fw"></i>OpenGL学习笔记——基础部分</a>
+            <a href="/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/" class="next" rel="next" title="OpenGL学习笔记——高级OpenGL">OpenGL学习笔记——高级OpenGL<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2019 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">xxxx</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
