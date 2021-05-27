@@ -115,84 +115,98 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#12-提前深度测试">1.2 提前深度测试</a></li>
-    <li><a href="#11-深度冲突">1.1 深度冲突</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#21-物体轮廓">2.1 物体轮廓</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#31-丢弃片段">3.1 丢弃片段</a></li>
-    <li><a href="#32-混合">3.2 混合</a></li>
-    <li><a href="#33-不要打乱顺序">3.3 不要打乱顺序</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#51-纹理texture附件和渲染缓冲对象renderbuffer-object附件">5.1 纹理(Texture)附件和渲染缓冲对象(Renderbuffer object)附件</a>
+    <li><a href="#1-深度测试">1. 深度测试</a>
       <ul>
-        <li><a href="#511-纹理附件">5.1.1 纹理附件</a></li>
-        <li><a href="#512-渲染缓冲对象附件">5.1.2 渲染缓冲对象附件</a></li>
-        <li><a href="#513-对比">5.1.3 对比</a></li>
+        <li><a href="#12-提前深度测试">1.2 提前深度测试</a></li>
+        <li><a href="#11-深度冲突">1.1 深度冲突</a></li>
       </ul>
     </li>
-    <li><a href="#52-后期处理">5.2 后期处理</a></li>
-    <li><a href="#53-代码样例">5.3 代码样例</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#61-天空盒">6.1 天空盒</a></li>
-    <li><a href="#62-环境映射">6.2 环境映射</a></li>
-    <li><a href="#63-动态环境贴图">6.3 动态环境贴图</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#72-分批顶点属性">7.2 分批顶点属性</a></li>
-    <li><a href="#72-复制缓冲">7.2 复制缓冲</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#81-glsl的内建变量">8.1 GLSL的内建变量</a>
+    <li><a href="#2-模板测试">2. 模板测试</a>
       <ul>
-        <li><a href="#812-顶点着色器变量">8.1.2 顶点着色器变量</a>
+        <li><a href="#21-物体轮廓">2.1 物体轮廓</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-混合">3. 混合</a>
+      <ul>
+        <li><a href="#31-丢弃片段">3.1 丢弃片段</a></li>
+        <li><a href="#32-混合">3.2 混合</a></li>
+        <li><a href="#33-不要打乱顺序">3.3 不要打乱顺序</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-面剔除">4. 面剔除</a></li>
+    <li><a href="#5-帧缓冲">5. 帧缓冲</a>
+      <ul>
+        <li><a href="#51-纹理texture附件和渲染缓冲对象renderbuffer-object附件">5.1 纹理(Texture)附件和渲染缓冲对象(Renderbuffer object)附件</a>
           <ul>
-            <li><a href="#gl_pointsize">gl_PointSize</a></li>
-            <li><a href="#gl_vertexid">gl_VertexID</a></li>
+            <li><a href="#511-纹理附件">5.1.1 纹理附件</a></li>
+            <li><a href="#512-渲染缓冲对象附件">5.1.2 渲染缓冲对象附件</a></li>
+            <li><a href="#513-对比">5.1.3 对比</a></li>
           </ul>
         </li>
-        <li><a href="#812-片段着色器">8.1.2 片段着色器</a>
+        <li><a href="#52-后期处理">5.2 后期处理</a></li>
+        <li><a href="#53-代码样例">5.3 代码样例</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-立方体贴图">6. 立方体贴图</a>
+      <ul>
+        <li><a href="#61-天空盒">6.1 天空盒</a></li>
+        <li><a href="#62-环境映射">6.2 环境映射</a></li>
+        <li><a href="#63-动态环境贴图">6.3 动态环境贴图</a></li>
+      </ul>
+    </li>
+    <li><a href="#7-高级数据">7. 高级数据</a>
+      <ul>
+        <li><a href="#72-分批顶点属性">7.2 分批顶点属性</a></li>
+        <li><a href="#72-复制缓冲">7.2 复制缓冲</a></li>
+      </ul>
+    </li>
+    <li><a href="#8-高级glsl">8. 高级GLSL</a>
+      <ul>
+        <li><a href="#81-glsl的内建变量">8.1 GLSL的内建变量</a>
           <ul>
-            <li><a href="#gl_fragcoord">gl_FragCoord</a></li>
-            <li><a href="#gl_frontfacing">gl_FrontFacing</a></li>
-            <li><a href="#gl_fragdepth">gl_FragDepth</a></li>
+            <li><a href="#812-顶点着色器变量">8.1.2 顶点着色器变量</a>
+              <ul>
+                <li><a href="#gl_pointsize">gl_PointSize</a></li>
+                <li><a href="#gl_vertexid">gl_VertexID</a></li>
+              </ul>
+            </li>
+            <li><a href="#812-片段着色器">8.1.2 片段着色器</a>
+              <ul>
+                <li><a href="#gl_fragcoord">gl_FragCoord</a></li>
+                <li><a href="#gl_frontfacing">gl_FrontFacing</a></li>
+                <li><a href="#gl_fragdepth">gl_FragDepth</a></li>
+              </ul>
+            </li>
+            <li><a href="#813-接口块">8.1.3 接口块</a></li>
           </ul>
         </li>
-        <li><a href="#813-接口块">8.1.3 接口块</a></li>
+        <li><a href="#82-uniform缓冲对象">8.2 Uniform缓冲对象</a>
+          <ul>
+            <li><a href="#821-uniform块布局">8.2.1 Uniform块布局</a></li>
+            <li><a href="#822-使用uniform缓冲">8.2.2 使用Uniform缓冲</a></li>
+            <li><a href="#833-设置uniform缓冲">8.3.3 设置Uniform缓冲</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
-    <li><a href="#82-uniform缓冲对象">8.2 Uniform缓冲对象</a>
+    <li><a href="#9-几何着色器">9. 几何着色器</a>
       <ul>
-        <li><a href="#821-uniform块布局">8.2.1 Uniform块布局</a></li>
-        <li><a href="#822-使用uniform缓冲">8.2.2 使用Uniform缓冲</a></li>
-        <li><a href="#833-设置uniform缓冲">8.3.3 设置Uniform缓冲</a></li>
+        <li><a href="#91-爆破物体">9.1 爆破物体</a></li>
+        <li><a href="#92-法向量可视化">9.2 法向量可视化</a></li>
       </ul>
     </li>
-  </ul>
-
-  <ul>
-    <li><a href="#91-爆破物体">9.1 爆破物体</a></li>
-    <li><a href="#92-法向量可视化">9.2 法向量可视化</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#101-实例数组instanced-arrays">10.1 实例数组（Instanced arrays）</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#111-多重采样">11.1 多重采样</a></li>
-    <li><a href="#112-离屏msaa">11.2 离屏MSAA</a></li>
-    <li><a href="#113-自定义抗锯齿算法">11.3 自定义抗锯齿算法</a></li>
+    <li><a href="#10-实例化instancing">10. 实例化（Instancing）</a>
+      <ul>
+        <li><a href="#101-实例数组instanced-arrays">10.1 实例数组（Instanced arrays）</a></li>
+      </ul>
+    </li>
+    <li><a href="#11-反走样anti-aliasing">11. 反走样（Anti Aliasing）</a>
+      <ul>
+        <li><a href="#111-多重采样">11.1 多重采样</a></li>
+        <li><a href="#112-离屏msaa">11.2 离屏MSAA</a></li>
+        <li><a href="#113-自定义抗锯齿算法">11.3 自定义抗锯齿算法</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h1 id="1-深度测试">1. 深度测试</h1>
