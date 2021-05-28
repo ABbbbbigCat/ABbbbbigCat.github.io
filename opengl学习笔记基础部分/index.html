@@ -29,7 +29,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/ABbbbbigCat.github.io\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86\/"
-        },"genre": "posts","keywords": "OpenGL学习笔记","wordcount":  7378 ,
+        },"genre": "posts","keywords": "OpenGL学习笔记","wordcount":  7363 ,
         "url": "https:\/\/ABbbbbigCat.github.io\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86\/","datePublished": "2021-05-26T02:37:40+08:00","dateModified": "2021-05-26T02:37:40+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -106,7 +106,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">OpenGL学习笔记——基础部分</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9B%BE%E5%BD%A2%E5%AD%A6/"><i class="far fa-folder fa-fw"></i>计算机图形学</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-26">2021-05-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 7378 字&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-26">2021-05-26</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 7363 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 15 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
@@ -1136,7 +1136,7 @@ GLM的大多数功能都可以从下面这3个头文件中找到:</p>
 <h2 id="41-总述">4.1 总述</h2>
 <p>本部分主要涉及图形学中三维空间到二维空间的模型变换问题。其中最核心的部分在于model, view, projection三种变换。</p>
 <p><strong>model</strong>——旨在三维空间中对模型进行各种变换，包括缩放、旋转、位移（先缩放，再位移）。为了能够使得偏移可以被完成，故存放三维物体的实际是一个4x4的矩阵。相应的，空间中的向量也包含4个变量，形如$(x,y,z,w)$。引入多一维度，也是为了避免旋转过程中出现万向节死锁（Gimbal Lock, 万向节死锁的出现是因为我们始终按照某一种固定顺序对3x3的三维空间物体做旋转）
-<em>(向量的$w$分量也叫<strong>齐次坐标</strong>。想要从齐次向量得到3D向量，可以把$x$、$y$和$z$坐标分别除以$w$坐标。我们通常不会注意这个问题，因为w分量通常是1.0。当$w$为零，则说明其为三维空间上的一个点)</em></p>
+<em>(引入$w$分量后坐标变为<strong>齐次坐标</strong>。当$w$为1，说明其为三维空间上的一个点；当$w$为零，则说明其为三维空间上的向量。我们可以通过让 $x$, $y$, $z$ 分量除以 $w$ 来它们的范围落到 [-1, 1] 之间)</em></p>
 <p><strong>view</strong>——视图主要是呈现在屏幕上的画面，通过视图变换，可以决定3D空间中的物体具体要投影到世界坐标系中的哪个平面当中。</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
