@@ -222,7 +222,9 @@ lightingShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 与平行光不同，*点光源*(Point Light)需要考虑能量的衰减（Attenuation）。能量衰减与光源到着色点间的距离成反比，衰减公式的定义如下：
 $$F_{at}=1.0/(K_c + k_l*d+k_q*d^2)$$
 其中$k_c$是常数项衰减因子，始终定义为1.0，保证分母始终大于1.0。$k_l$和$k_q$分别为一次项和二次项。从定义可以看出，由于二次项的存在，光线会在大部分时候以线性的方式衰退，直到距离变得足够大，让二次项超过一次项，光的强度会以更快的速度下降。
-![光的衰减情况](https://img-blog.csdnimg.cn/20210417150443218.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+
+![光的衰减情况](https://i.loli.net/2021/06/06/gStWmAXEwIF786N.png)
+
 ### 5.2.2 选值
 衰减因子的选择是一个问题。正确地设定它们的值取决于很多因素：环境、希望光覆盖的距离、光的类型等。在大多数情况下，这都是经验的问题，以及适量的调整。下面这个表格显示了模拟一个（大概）真实的，覆盖特定半径（距离）的光源时，这些项可能取的一些值。第一列指定的是在给定的三项时光所能覆盖的距离。这些值是大多数光源很好的起始点，它们由[Ogre3D](http://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation)的Wiki所提供：
 |范围| 常数项 |一次项|二次项|
@@ -268,7 +270,8 @@ void main
 ### 5.4.1 聚光的定义
 *聚光*（Spotlight）是位于环境中某个位置的光源，它只朝一个特定方向而不是所有方向照射光线。这样的结果就是只有在聚光方向的特定半径内的物体才会被照亮，其它的物体都会保持黑暗。聚光很好的例子就是路灯或手电筒。
 OpenGL中定义的聚光用一个世界空间位置、一个方向和一个*切光角*(Cutoff Angle)来表示的，切光角指定了聚光的半径（圆锥的半径）。对于每个片段，我们会计算片段是否位于聚光的切光方向之间（也就是在锥形内），如果是的话，我们就会相应地照亮片段。下面这张图会让你明白聚光是如何工作的：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2021041716511579.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+
+![在这里插入图片描述](https://i.loli.net/2021/06/06/3q6lWgNvcAOdHB9.png)
 
  - LightDir：从片段指向光源的向量。
  - SpotDir：聚光所指向的方向。
@@ -301,7 +304,7 @@ void main() {
 ### 5.3 平滑/软化边缘
 按照上述做法，最后得到的效果并不如意，这是因为光照的边缘处的差异过于极端。如下图所示，注意到光边缘处内外明暗十分显著，缺乏平滑过渡。为了让聚光效果显得更加真实，我们需要对边缘做平滑/软化处理。
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210417174118924.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](https://i.loli.net/2021/06/06/Uhmk5MFZrcBdNQb.png)
 为了创建一种看起来边缘平滑的聚光，我们需要模拟聚光有一个*内圆锥*(Inner Cone)和一个*外圆锥*(Outer Cone)。内圆锥即上面的光照部分，而外圆锥则主要起到让光从内圆锥逐渐变暗直到外圆锥边界的效果。
 为了创建一个外圆锥，我们只需要再定义一个余弦值来代表聚光方向向量和外圆锥向量（等于它的半径）的夹角。然后，如果一个片段处于内外圆锥之间，将会给它计算出一个0.0到1.0之间的强度值。如果片段在内圆锥之内，它的强度就是1.0，如果在外圆锥之外强度值就是0.0。公式如下（所有角度都代表余弦值）：
 $$I=({\theta}-{\gamma})/{\epsilon}$$
@@ -339,7 +342,9 @@ void main		// 内外边缘的引入让我们不再需要判断着色片段是否
 }
 ```
 边缘软化后的效果：
-![软化后的结果](https://img-blog.csdnimg.cn/20210417201855340.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+
+![软化后的结果](https://i.loli.net/2021/06/06/EvjuryPz6OFKt71.png)
+
 # 6. 多光源
 多光源的本质就是多种类型的光共同作用于物体后产生的着色效果。我们可以将各种光源的着色过程封装为相应的函数，并累加其计算结果得到最后的着色效果。
 

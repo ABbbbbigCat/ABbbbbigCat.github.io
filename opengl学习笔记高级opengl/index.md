@@ -77,8 +77,8 @@ OpenGL的混合具有很强的灵活性，<font color="#00dd00#">glBlendEquation
  1. 先绘制所有不透明的物体。
  2. 对所有透明的物体排序。
  3. 按顺序绘制所有透明的物体。
- 
- 
+
+
 虽然按照距离排序物体这种方法对我们这个场景能够正常工作，但它并没有考虑旋转、缩放或者其它的变换，奇怪形状的物体需要一个不同的计量，而不是仅仅一个位置向量。完整渲染一个包含不透明和透明物体的场景并不是那么容易。更高级的技术还有**[次序无关透明度](https://zhuanlan.zhihu.com/p/92337395)**(Order Independent Transparency, OIT)
 
 # 4. 面剔除
@@ -179,7 +179,9 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 # 6. 立方体贴图
 简而言之，立方体贴图就是一个包含了6个2D纹理的纹理，每个2D纹理都组成了立方体的一个面：一个有纹理的立方体。使用立方体贴图的原因是它有一个非常有用的特性，[**它可以通过一个方向向量来进行索引/采样**](https://learnopengl-cn.github.io/04%20Advanced%20OpenGL/06%20Cubemaps/#_7)。假设我们有一个1x1x1的单位立方体，方向向量的原点位于它的中心。使用一个橘黄色的方向向量来从立方体贴图上采样一个纹理值会像是这样：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210427014436403.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+
+![在这里插入图片描述](https://i.loli.net/2021/06/06/PX38J7WtYdzvO5K.png)
+
 ## 6.1 天空盒
 立方体贴图一个比较常见的用途是用来渲染场景四周的天空盒，它的纹理加载与普通2D的纹理加载需要注意对R轴的配置：
 
@@ -218,7 +220,8 @@ void main()
 }
 ```
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210428015340555.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](https://i.loli.net/2021/06/06/KdUCW38l1OVBumR.png)
+
 - 折射的思想与反射类似，都是通过入射视角和法线关系获取折射向量。与反射一样，利用GLSL内建的<font color="#00dd00#">refract</font>函数，以及[折射率](https://baike.baidu.com/item/%E6%8A%98%E5%B0%84%E7%8E%87#4)可以很容易获取折射向量。（教程里涉及的是单面折射，多面折射需要更加精确的物理分析）
 
 ```c
@@ -230,7 +233,7 @@ void main()
     FragColor = vec4(texture(skybox, R).rgb, 1.0);
 }
 ```
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210428020159458.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+![在这里插入图片描述](https://i.loli.net/2021/06/06/EPXpsSmeUvQyNLx.png)
 ## 6.3 动态环境贴图
 上面提到的环境映射是静态环境映射，这存在问题：例如，对于一面可以反射的镜子而言，它能反射的只有四周的环境。这当然不合理，因为它应该优先反射离自己最近的物体。
 我们可以利用之前的**帧缓冲为物体的6个不同角度创建出场景的纹理**，并在每个渲染迭代中将它们储存到一个立方体贴图中。之后我们就可以使用这个（动态生成的）立方体贴图来创建出更真实的，包含其它物体的，反射和折射表面了。这就叫做<font color="#00dd00#">动态环境映射</font>(Dynamic Environment Mapping)
@@ -429,8 +432,11 @@ layout (std140) uniform ExampleBlock
 除了<font color="#000066">shader</font>和<font color="#000066">std140</font>布局外，还有有一种名为<font color="#000066">packed</font>的布局。它不能保证这个布局在每个程序中保持不变，因为它允许编译器去将uniform变量从Uniform块中优化掉，这在每个着色器中都可能是不同的。
 ### 8.2.2 使用Uniform缓冲
 为了知道Uniform缓冲和Uniform块的对应关系，在OpenGL上下文中，定义了一些绑定点(Binding Point)，我们可以将一个Uniform缓冲链接至它。在创建Uniform缓冲之后，我们将它绑定到其中一个绑定点上，并将着色器中的Uniform块绑定到相同的绑定点，把它们连接到一起。过程如下图所示：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210428213739540.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80NDMxMzQzNw==,size_16,color_FFFFFF,t_70#pic_center)
+
+![在这里插入图片描述](https://i.loli.net/2021/06/06/qQTtiskEl82V1BX.png)
+
 我们可以调用<font color="#00dd00#">glGetUniformBlockIndex</font>和<font color="#00dd00#">glUniformBlockBinding</font>实现绑定，例如对于上图中的Light Uniform模块，我们可以采用下面的方式对其绑定：
+
 ```c
 unsigned int lights_index = glGetUniformBlockIndex(shaderA.ID, "Lights");   
 glUniformBlockBinding(shaderA.ID, lights_index, 2);
@@ -599,8 +605,11 @@ void main()
 显然，走样的产生与分辨率有关，所以一个很自然的反走样手段是**超采样抗锯齿**(Super Sample Anti-aliasing, SSAA)，它会使用比正常分辨率更高的分辨率（即超采样）来渲染场景，当图像输出在帧缓冲中更新时，分辨率会被下采样(Downsample)至正常的分辨率。不过这种方式的开销太大，如今已鲜有人问津。
 ## 11.1 多重采样
 **多重采样抗锯齿**(Multisample Anti-aliasing, MSAA)是目前一种更聪明的技术，因为它只在光栅化阶段（光栅化：光栅器接受三维空间中顶点作为输入，经过光栅化后将其转换为二维屏幕上的一个片段）判断像素是否被三角形覆盖。多重采样实际做的就是在一个像素中放置多个采样点（自定义采样点的排布），通过判断有多少个采样点落在三角形内部，我们可以对最后的着色做平滑处理。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20210430202515443.png#pic_center)
+
+![在这里插入图片描述](https://i.loli.net/2021/06/06/rTCZ3zkgYeh6oP2.png)
+
 上图展示了放置单一采样点和多个采样点的区别，对于前者我们对像素的处理只有“是”或“不是”；而对于后者我们增加了一些平滑处理，实际的着色情况可以表示为$color=textrue*0.5$。
+
 ```cpp
 // GLFW负责创建多重采样缓冲
 glfwWindowHint(GLFW_SAMPLES, 4);	// 设置采样点

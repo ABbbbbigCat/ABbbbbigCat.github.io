@@ -1,28 +1,28 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>OpenGL学习笔记 - 分类 - 大猫的博客</title>
-        <link>https://abbbbbigcat.github.io/categories/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+        <link>https:\\abbbbbigcat.github.io --buildDrafts/categories/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
         <description>OpenGL学习笔记 - 分类 - 大猫的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 26 May 2021 03:44:19 &#43;0800</lastBuildDate><atom:link href="https://abbbbbigcat.github.io/categories/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 26 May 2021 03:44:19 &#43;0800</lastBuildDate><atom:link href="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/categories/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
     <title>OpenGL学习笔记——高级OpenGL</title>
-    <link>https://abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/</link>
+    <link>https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/</link>
     <pubDate>Wed, 26 May 2021 03:44:19 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/</guid>
+    <guid>https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/</guid>
     <description><![CDATA[1. 深度测试 深度测试通过衡量物体的深度缓冲（Depth Buffer, 物体与视口的差距）决定了最后渲染的图像。OpenGL支持八种深度测试函数，其中最长使用]]></description>
 </item><item>
     <title>OpenGL学习笔记——光照</title>
-    <link>https://abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/</link>
+    <link>https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/</link>
     <pubDate>Wed, 26 May 2021 03:40:39 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/</guid>
+    <guid>https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/</guid>
     <description><![CDATA[1. 颜色 图形学中物体所呈现的颜色可以理解为光照射到该物体上后，该物体所反射出来的颜色，即物体从一个光源反射各个颜色分量的大小。 1 2 3 4 // 光的颜]]></description>
 </item><item>
     <title>OpenGL学习笔记——基础部分</title>
-    <link>https://abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/</link>
+    <link>https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/</link>
     <pubDate>Wed, 26 May 2021 02:37:40 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https://abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/</guid>
+    <guid>https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/</guid>
     <description><![CDATA[1. 你好，三角形 基于OpenGL绘制三角形 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50]]></description>
 </item></channel>
 </rss>

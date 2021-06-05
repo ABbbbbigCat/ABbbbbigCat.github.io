@@ -561,7 +561,8 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)heigh
 // 第三和第四个参数设置了平截头体的近和远平面。我们通常设置近距离为0.1f，而远距离设为100.0f。
 ```
 透视投影矩阵：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/2021041822543191.png#pic_center)![在这里插入图片描述](https://img-blog.csdnimg.cn/2021041822545568.png#pic_center)![在这里插入图片描述](https://img-blog.csdnimg.cn/2021041822551063.png#pic_center)
+
+![在这里插入图片描述](https://i.loli.net/2021/06/06/z36uA5jvDwLk9Xx.png)![在这里插入图片描述](https://img-blog.csdnimg.cn/2021041822545568.png#pic_center)![在这里插入图片描述](https://img-blog.csdnimg.cn/2021041822551063.png#pic_center)
 
 
 ## 4.2 摄像机类
