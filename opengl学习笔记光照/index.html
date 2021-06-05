@@ -8,19 +8,19 @@
         <title>OpenGL学习笔记——光照 - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="OpenGL学习笔记——光照" />
 <meta property="og:description" content="1. 颜色 图形学中物体所呈现的颜色可以理解为光照射到该物体上后，该物体所反射出来的颜色，即物体从一个光源反射各个颜色分量的大小。 1 2 3 4 // 光的颜" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https:\\abbbbbigcat.github.io --buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" /><meta property="og:image" content="https:\\abbbbbigcat.github.io --buildDrafts"/><meta property="article:section" content="posts" />
+<meta property="og:url" content="https:\\abbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" /><meta property="og:image" content="https:\\abbbbbigcat.github.io"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-05-26T03:40:39&#43;08:00" />
 <meta property="article:modified_time" content="2021-05-26T03:40:39&#43;08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https:\\abbbbbigcat.github.io --buildDrafts"/>
+<meta name="twitter:image" content="https:\\abbbbbigcat.github.io"/>
 
 <meta name="twitter:title" content="OpenGL学习笔记——光照"/>
 <meta name="twitter:description" content="1. 颜色 图形学中物体所呈现的颜色可以理解为光照射到该物体上后，该物体所反射出来的颜色，即物体从一个光源反射各个颜色分量的大小。 1 2 3 4 // 光的颜"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" /><link rel="prev" href="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" /><link rel="next" href="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" /><link rel="prev" href="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" /><link rel="next" href="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -28,9 +28,9 @@
         "inLanguage": "zh-CN",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\\\\abbbbbigcat.github.io --buildDrafts\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7\/"
+            "@id": "https:\\\\abbbbbigcat.github.io\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7\/"
         },"genre": "posts","keywords": "计算机图形学","wordcount":  5802 ,
-        "url": "https:\\\\abbbbbigcat.github.io --buildDrafts\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7\/","datePublished": "2021-05-26T03:40:39+08:00","dateModified": "2021-05-26T03:40:39+08:00","publisher": {
+        "url": "https:\\\\abbbbbigcat.github.io\/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7\/","datePublished": "2021-05-26T03:40:39+08:00","dateModified": "2021-05-26T03:40:39+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -773,8 +773,8 @@ void main() {
         data-srcset="https://i.loli.net/2021/06/06/Uhmk5MFZrcBdNQb.png, https://i.loli.net/2021/06/06/Uhmk5MFZrcBdNQb.png 1.5x, https://i.loli.net/2021/06/06/Uhmk5MFZrcBdNQb.png 2x"
         data-sizes="auto"
         alt="https://i.loli.net/2021/06/06/Uhmk5MFZrcBdNQb.png"
-        title="在这里插入图片描述" />
-为了创建一种看起来边缘平滑的聚光，我们需要模拟聚光有一个<em>内圆锥</em>(Inner Cone)和一个<em>外圆锥</em>(Outer Cone)。内圆锥即上面的光照部分，而外圆锥则主要起到让光从内圆锥逐渐变暗直到外圆锥边界的效果。
+        title="在这里插入图片描述" /></p>
+<p>为了创建一种看起来边缘平滑的聚光，我们需要模拟聚光有一个<em>内圆锥</em>(Inner Cone)和一个<em>外圆锥</em>(Outer Cone)。内圆锥即上面的光照部分，而外圆锥则主要起到让光从内圆锥逐渐变暗直到外圆锥边界的效果。
 为了创建一个外圆锥，我们只需要再定义一个余弦值来代表聚光方向向量和外圆锥向量（等于它的半径）的夹角。然后，如果一个片段处于内外圆锥之间，将会给它计算出一个0.0到1.0之间的强度值。如果片段在内圆锥之内，它的强度就是1.0，如果在外圆锥之外强度值就是0.0。公式如下（所有角度都代表余弦值）：
 $$I=({\theta}-{\gamma})/{\epsilon}$$</p>
 <p>其中，${\epsilon}={\phi}-{\gamma}$是内($\phi$)外($\gamma$)圆锥的余弦差值。最终的$I$值就是在当前片段聚光的强度。<a href="https://learnopengl-cn.github.io/02%20Lighting/05%20Light%20casters/#_8" target="_blank" rel="noopener noreffer">learnOpenGL</a>中给出了一些设置情况：</p>
@@ -852,18 +852,9 @@ $$I=({\theta}-{\gamma})/{\epsilon}$$</p>
 <td>0.966 - 0.953 = 0.0448</td>
 <td>0.966 - 0.953 / 0.0448 = 0.29</td>
 </tr>
-<tr>
-<td>根据以上定义，我们可以重新定义我们的片段着色器：</td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<p>根据以上定义，我们可以重新定义我们的片段着色器：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre class="chroma"><code><span class="lnt"> 1
@@ -1228,7 +1219,7 @@ void main		// 内外边缘的引入让我们不再需要判断着色片段是否
                             <a class="link-to-markdown" href="/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/index.md" target="_blank">阅读原始文档</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-via="xxxx" data-hashtags="计算机图形学"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-hashtag="计算机图形学"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i class="fab fa-evernote fa-fw"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-via="xxxx" data-hashtags="计算机图形学"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-hashtag="计算机图形学"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https:%5c%5cabbbbbigcat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%85%89%E7%85%A7/" data-title="OpenGL学习笔记——光照"><i class="fab fa-evernote fa-fw"></i></a></span>
             </div>
         </div>
     </div>

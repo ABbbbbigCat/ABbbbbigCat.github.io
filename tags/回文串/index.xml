@@ -1,14 +1,14 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>回文串 - 标签 - 大猫的博客</title>
-        <link>https:\\abbbbbigcat.github.io --buildDrafts/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/</link>
+        <link>https:\\abbbbbigcat.github.io/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/</link>
         <description>回文串 - 标签 - 大猫的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 02 Jun 2021 02:04:45 &#43;0800</lastBuildDate><atom:link href="https:%5c%5cabbbbbigcat.github.io%20--buildDrafts/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 02 Jun 2021 02:04:45 &#43;0800</lastBuildDate><atom:link href="https:%5c%5cabbbbbigcat.github.io/tags/%E5%9B%9E%E6%96%87%E4%B8%B2/" rel="self" type="application/rss+xml" /><item>
     <title>算法笔记——马拉车算法(Manacher&#39;s Algorithm)</title>
-    <link>https:\\abbbbbigcat.github.io --buildDrafts/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95/</link>
+    <link>https:\\abbbbbigcat.github.io/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95/</link>
     <pubDate>Wed, 02 Jun 2021 02:04:45 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https:\\abbbbbigcat.github.io --buildDrafts/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95/</guid>
+    <guid>https:\\abbbbbigcat.github.io/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95/</guid>
     <description><![CDATA[例题：leetcode-5 1. 引子 在一串字符串里找出最长回文串的问题，可以通过暴力求解法来解决，其时间复杂度为O(n^2)，这当然不会很快。算]]></description>
 </item></channel>
 </rss>
