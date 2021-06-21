@@ -59,6 +59,6 @@
     <pubDate>Mon, 17 May 2021 12:32:00 &#43;0800</pubDate>
     <author>作者</author>
     <guid>https://capablecat.github.io/icarl/</guid>
-    <description><![CDATA[简介 本文是增量学习的经典论文，发表于CVPR 2021，Ven等人的增量学习项目集成了该方法。 本文是rehearsal策略的经典算法，其核心点]]></description>
+    <description><![CDATA[简介 本文是增量学习的经典论文，发表于CVPR 2017，基于pytorch的代码在此处。 本文是rehearsal策略的经典算法，其核心点主要是]]></description>
 </item></channel>
 </rss>

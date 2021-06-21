@@ -3,7 +3,7 @@
 
 # 简介
 
-本文是增量学习的经典论文，发表于[CVPR 2021](https://arxiv.org/abs/1611.07725)，Ven等人的[增量学习项目](https://github.com/GMvandeVen/continual-learning)集成了该方法。
+本文是增量学习的经典论文，发表于[CVPR 2017](https://arxiv.org/abs/1611.07725)，基于pytorch的代码在[此处](https://github.com/donlee90/icarl)。
 
 本文是rehearsal策略的经典算法，其核心点主要是：第一，分类采取了NME（nearest-mean-of-exemplars）；第二，基于herding的优先级筛选样例（保留距离均值更近的样例）；第三，使用知识蒸馏和原型预演进行表征学习。
 
@@ -23,7 +23,7 @@
 
 **Algorithm 1** 给出了iCaRL的增量训练过程，**Algorithm 3** 给出了iCaRL如何进行表示学习
 
-结构：在特征提取部分使用CNN网络，然后是单个分类层，其 sigmoid 输出节点与迄今为止观察到的类一样多。对于任意的类 $y\in{1,...,t}$，网络的输出结果为
+**模型**：32-layer resnet (For CIFAR-100); 在特征提取部分使用CNN网络，然后是单个分类层，其 sigmoid 输出节点与迄今为止观察到的类一样多。对于任意的类 $y\in{1,...,t}$，网络的输出结果为
 
 $$g_y(x)=\frac{1}{1+exp(-\alpha(x))} \quad with \quad \alpha_y(x)=w_{y}^t\varphi(x)$$
 
