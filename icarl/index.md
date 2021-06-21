@@ -23,7 +23,7 @@
 
 **Algorithm 1** 给出了iCaRL的增量训练过程，**Algorithm 3** 给出了iCaRL如何进行表示学习
 
-**模型**：32-layer resnet (For CIFAR-100); 在特征提取部分使用CNN网络，然后是单个分类层，其 sigmoid 输出节点与迄今为止观察到的类一样多。对于任意的类 $y\in{1,...,t}$，网络的输出结果为
+**模型**：32-layer resnet (For CIFAR-100); 在特征提取部分使用CNN网络，然后是单个分类层，其 sigmoid 输出节点与迄今为止观察到的类一样多。对于任意的类 $y\in{1,...,t}$，网络的输出结果为（sigmoid层用于模型的损失函数构造，让模型参数得以训练，实际分类则采用NME）：
 
 $$g_y(x)=\frac{1}{1+exp(-\alpha(x))} \quad with \quad \alpha_y(x)=w_{y}^t\varphi(x)$$
 
