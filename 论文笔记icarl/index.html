@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>论文笔记——iCaRL: Incremental Classifier and Representation Learning - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——iCaRL: Incremental Classifier and Representation Learning" />
+<meta property="og:description" content="简介 本文是增量学习的经典论文，发表于CVPR 2017，基于pytorch的代码在此处。 本文是rehearsal策略的经典算法，其核心点主要是" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" /><meta property="og:image" content="https://capablecat.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-17T12:32:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-17T12:32:00&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://capablecat.github.io/logo.png"/>
+
+<meta name="twitter:title" content="论文笔记——iCaRL: Incremental Classifier and Representation Learning"/>
+<meta name="twitter:description" content="简介 本文是增量学习的经典论文，发表于CVPR 2017，基于pytorch的代码在此处。 本文是rehearsal策略的经典算法，其核心点主要是"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" /><link rel="next" href="https://capablecat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "论文笔记——iCaRL: Incremental Classifier and Representation Learning",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  854 ,
+        "url": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl\/","datePublished": "2021-05-17T12:32:00+08:00","dateModified": "2021-05-17T12:32:00+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/"> 主页 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/" title="">主页</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——iCaRL: Incremental Classifier and Representation Learning</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-17">2021-05-17</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 854 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#训练过程">训练过程</a></li>
+    <li><a href="#实验结果">实验结果</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="简介">简介</h1>
+<p>本文是增量学习的经典论文，发表于<a href="https://arxiv.org/abs/1611.07725" target="_blank" rel="noopener noreffer">CVPR 2017</a>，基于pytorch的代码在<a href="https://github.com/donlee90/icarl" target="_blank" rel="noopener noreffer">此处</a>。</p>
+<p>本文是rehearsal策略的经典算法，其核心点主要是：第一，分类采取了NME（nearest-mean-of-exemplars）；第二，基于herding的优先级筛选样例（保留距离均值更近的样例）；第三，使用知识蒸馏和原型预演进行表征学习。</p>
+<blockquote>
+<p>知识蒸馏由Hinton团队提出，最初用于模型间的知识迁移。由于另外一篇经典的增量学习论文<a href="https://link.springer.com/chapter/10.1007/978-3-319-46493-0_37" target="_blank" rel="noopener noreffer">LwF</a>，知识蒸馏被用到增量学习中。</p>
+<p>NME相较于nearest-class-mean(NCM)的优势在于它不需要保存所有的原始样本，而是通过计算样本的平均特征向量后。</p>
+<p>herding 策略是 rehearsal 中很常见的策略，它主张选择最靠近均值的数据以确保样例集能够代表数据的核心知识。</p>
+</blockquote>
+<p>值得一提的是，本文采用了<strong>固定样例集大小</strong>的策略来节省样例集存储空间。具体而言，对于CIFAR-100，iCaRL固定了样例集大小 $m = 2000 $，每当有新类加入，样例集中保存的各种类的数目都会按比例缩小。其筛选的标准还是基于与<strong>均值的距离</strong>。</p>
+<blockquote>
+<p>固定样例集大小的规则目前已经被广泛采纳，对于回溯而言，许多研究者们默认了采用$m=2000$的标准，例如<a href="https://arxiv.org/pdf/2002.10211.pdf" target="_blank" rel="noopener noreffer">Mnemonics Training</a></p>
+</blockquote>
+<h1 id="训练过程">训练过程</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png"
+        data-srcset="https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png, https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png 1.5x, https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png"
+        title="image-20210619022437424" /></p>
+<p><strong>Algorithm 1</strong> 给出了iCaRL的增量训练过程，<strong>Algorithm 3</strong> 给出了iCaRL如何进行表示学习</p>
+<p><strong>模型</strong>：32-layer resnet (For CIFAR-100); 在特征提取部分使用CNN网络，然后是单个分类层，其 sigmoid 输出节点与迄今为止观察到的类一样多。对于任意的类 $y\in{1,&hellip;,t}$，网络的输出结果为（sigmoid层用于模型的损失函数构造，让模型参数得以训练，实际分类则采用NME）：</p>
+<p>$$g_y(x)=\frac{1}{1+exp(-\alpha(x))} \quad with \quad \alpha_y(x)=w_{y}^t\varphi(x)$$</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png"
+        data-srcset="https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png, https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png 1.5x, https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png"
+        title="image-20210619024612911" /></p>
+<h1 id="实验结果">实验结果</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png"
+        data-srcset="https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png, https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png 1.5x, https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png"
+        title="image-20210619025100005" /></p>
+<blockquote>
+<p><a href="https://ieeexplore.ieee.org/document/6619275" target="_blank" rel="noopener noreffer">Kuzborskij</a>等人的研究表明，在向现有的线性多类分类器中添加新类时，只要能够从所有类的<strong>少量数据</strong>中重新训练分类器，就可以避免精度损失。这说明了Rehearsal在缓解灾难性遗忘方面的效果。</p>
+<p>基于Rehearsal的研究主要有两各分关注点，其一是如何让少量数据更好的发挥作用，其二是如何筛选少量数据。</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-05-17</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/incremental-learning/">incremental learning</a>,&nbsp;<a href="/tags/rehearsal-strategy/">rehearsal strategy</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="next" rel="next" title="OpenGL学习笔记——基础部分">OpenGL学习笔记——基础部分<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">大猫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
