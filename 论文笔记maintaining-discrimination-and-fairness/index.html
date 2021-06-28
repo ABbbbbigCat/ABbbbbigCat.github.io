@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning" />
+<meta property="og:description" content="简介 本文发表于 CVPR 2020，参考代码见此。 本文主要做了两方面工作：其一，分析了知识蒸馏（Knowing Distillation）在增量学习中实" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https:\\capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" /><meta property="og:image" content="https:\\capablecat.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-12T08:32:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-12T08:32:00&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https:\\capablecat.github.io"/>
+
+<meta name="twitter:title" content="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning"/>
+<meta name="twitter:description" content="简介 本文发表于 CVPR 2020，参考代码见此。 本文主要做了两方面工作：其一，分析了知识蒸馏（Knowing Distillation）在增量学习中实"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" /><link rel="prev" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" /><link rel="next" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\\\\capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  677 ,
+        "url": "https:\\\\capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness\/","datePublished": "2021-05-12T08:32:00+08:00","dateModified": "2021-05-12T08:32:00+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/"> 主页 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/" title="">主页</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-12">2021-05-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 677 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#模型结构">模型结构</a></li>
+    <li><a href="#实验结果">实验结果</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="简介">简介</h1>
+<p>本文发表于 <a href="https://arxiv.org/pdf/1911.07053.pdf" target="_blank" rel="noopener noreffer">CVPR 2020</a>，参考代码<a href="https://github.com/hugoycj/Incremental-Learning-with-Weight-Aligning" target="_blank" rel="noopener noreffer">见此</a>。</p>
+<p>本文主要做了两方面工作：其一，分析了知识蒸馏（Knowing Distillation）在增量学习中实际发挥的效果，提出KD的效果在于强调了旧类的<strong>差异性</strong>；其二，探究了新旧类不平衡的原因，提出了Weight Aligning维护<strong>公平性</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/28/MstOaYWTKm3eVLn.png"
+        data-srcset="https://i.loli.net/2021/06/28/MstOaYWTKm3eVLn.png, https://i.loli.net/2021/06/28/MstOaYWTKm3eVLn.png 1.5x, https://i.loli.net/2021/06/28/MstOaYWTKm3eVLn.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/28/MstOaYWTKm3eVLn.png"
+        title="image-20210628151518957" /></p>
+<p>具体而言，table 1 表明施加KD增加了旧类被错分为新类的概率，降低了旧类被误分为其他旧类的概率。本文对此给出的解释是——KD维护了旧类的<strong>差异性</strong>。</p>
+<blockquote>
+<p>传统观点中，KD的主要作用在于维护旧知识——以旧模型的输出作为标签来约束模型训练，从而在宏观中维护旧知识。本文在此基础上进一步从细节上探究了KD发挥的效果，最后通过旧类别被误分为其他旧类和新类的情况推得KD维护了新旧类的差异性。因为KD的施加降低了旧类被误分为其他旧类的概率（<strong>强调了旧类间的差异，维护了模型的旧知识</strong>），增加了旧类被误分为新类的概率（被误分为其他旧类的损失相较于被误分为新类的损失更大，且由于新旧类不平衡问题导致了对新类的响应高于对旧类响应）</p>
+<p>不过这样的分析似乎并不全面，观察 Table 1 不难发现，KD损失的引入增大了新类的error，降低了旧类的error，由此可见KD同时维护了新旧类的公平性。</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/28/f7eLYGvKuU2Bodi.png"
+        data-srcset="https://i.loli.net/2021/06/28/f7eLYGvKuU2Bodi.png, https://i.loli.net/2021/06/28/f7eLYGvKuU2Bodi.png 1.5x, https://i.loli.net/2021/06/28/f7eLYGvKuU2Bodi.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/28/f7eLYGvKuU2Bodi.png"
+        title="image-20210628152040926" /></p>
+<p>上图是在进行增量训练时，分类层<strong>权重范</strong>，观察到新类的权重范数明显大于旧类，由此推知训练过程中发生了不平衡，分类结果朝着新类倾斜。对此，本文提出了一个放缩因子来缩小新类权重的值，从而维护<strong>公平性</strong>。其公式如下：</p>
+<p>$$\hat{W}<em>{new}=\gamma W</em>{new}$$</p>
+<p>$$\gamma=\frac{Mean(Norm_{old})}{Mean(Norm_{new})}$$</p>
+<h1 id="模型结构">模型结构</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/28/zpoj9QihUkWxlMm.png"
+        data-srcset="https://i.loli.net/2021/06/28/zpoj9QihUkWxlMm.png, https://i.loli.net/2021/06/28/zpoj9QihUkWxlMm.png 1.5x, https://i.loli.net/2021/06/28/zpoj9QihUkWxlMm.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/28/zpoj9QihUkWxlMm.png"
+        title="image-20210628151202803" /></p>
+<p>模型：For CIFAR-100, use 32-layer ResNet; For ImageNet, use 18-layer ResNet</p>
+<p>WA 模型的特点是使用线性纠正对$W_n$进行了缩放，以此来解决新旧类之间不平衡问题。</p>
+<h1 id="实验结果">实验结果</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/28/6tmW34M8FqaflGz.png"
+        data-srcset="https://i.loli.net/2021/06/28/6tmW34M8FqaflGz.png, https://i.loli.net/2021/06/28/6tmW34M8FqaflGz.png 1.5x, https://i.loli.net/2021/06/28/6tmW34M8FqaflGz.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/28/6tmW34M8FqaflGz.png"
+        title="image-20210628154845583" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/28/IMsiefZjdhvLDGg.png"
+        data-srcset="https://i.loli.net/2021/06/28/IMsiefZjdhvLDGg.png, https://i.loli.net/2021/06/28/IMsiefZjdhvLDGg.png 1.5x, https://i.loli.net/2021/06/28/IMsiefZjdhvLDGg.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/28/IMsiefZjdhvLDGg.png"
+        title="image-20210628155118497" /></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-05-12</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" data-title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/incremental-learning/">incremental learning</a>,&nbsp;<a href="/tags/rehearsal-strategy/">rehearsal strategy</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" class="prev" rel="prev" title="论文笔记——Large Scale Incremental Learning"><i class="fas fa-angle-left fa-fw"></i>论文笔记——Large Scale Incremental Learning</a>
+            <a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" class="next" rel="next" title="论文笔记——iCaRL: Incremental Classifier and Representation Learning">论文笔记——iCaRL: Incremental Classifier and Representation Learning<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">大猫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

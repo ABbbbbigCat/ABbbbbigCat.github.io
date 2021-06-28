@@ -5,32 +5,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-        <title>论文笔记——iCaRL: Incremental Classifier and Representation Learning - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——iCaRL: Incremental Classifier and Representation Learning" />
-<meta property="og:description" content="简介 本文是增量学习的经典论文，发表于CVPR 2017，基于pytorch的代码在此处。 本文是rehearsal策略的经典算法，其核心点主要是" />
+        <title>论文笔记——Large Scale Incremental Learning - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——Large Scale Incremental Learning" />
+<meta property="og:description" content="简介 本文发表于CVPR 2019，代码见此。 本文在回溯策略上同 iCaRL 一样遵循了 herding 策略，主要致力于解决 rehearsal strategy 中新旧类不平衡问题，提出在全连接层后面增加" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https:\\capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" /><meta property="og:image" content="https:\\capablecat.github.io"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-05-17T12:32:00&#43;08:00" />
-<meta property="article:modified_time" content="2021-05-17T12:32:00&#43;08:00" />
+<meta property="og:url" content="https:\\capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" /><meta property="og:image" content="https:\\capablecat.github.io"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-04-22T11:32:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-04-22T11:32:00&#43;08:00" />
 
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https:\\capablecat.github.io"/>
 
-<meta name="twitter:title" content="论文笔记——iCaRL: Incremental Classifier and Representation Learning"/>
-<meta name="twitter:description" content="简介 本文是增量学习的经典论文，发表于CVPR 2017，基于pytorch的代码在此处。 本文是rehearsal策略的经典算法，其核心点主要是"/>
+<meta name="twitter:title" content="论文笔记——Large Scale Incremental Learning"/>
+<meta name="twitter:description" content="简介 本文发表于CVPR 2019，代码见此。 本文在回溯策略上同 iCaRL 一样遵循了 herding 策略，主要致力于解决 rehearsal strategy 中新旧类不平衡问题，提出在全连接层后面增加"/>
 <meta name="application-name" content="LoveIt">
 <meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" /><link rel="prev" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" /><link rel="next" href="https:%5c%5ccapablecat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" /><link rel="next" href="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "论文笔记——iCaRL: Incremental Classifier and Representation Learning",
+        "headline": "论文笔记——Large Scale Incremental Learning",
         "inLanguage": "zh-CN",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\\\\capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl\/"
-        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  854 ,
-        "url": "https:\\\\capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl\/","datePublished": "2021-05-17T12:32:00+08:00","dateModified": "2021-05-17T12:32:00+08:00","publisher": {
+            "@id": "https:\\\\capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  838 ,
+        "url": "https:\\\\capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning\/","datePublished": "2021-04-22T11:32:00+08:00","dateModified": "2021-04-22T11:32:00+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
@@ -104,9 +104,9 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">目录</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——iCaRL: Incremental Classifier and Representation Learning</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Large Scale Incremental Learning</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-17">2021-05-17</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 854 字&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-04-22">2021-04-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 838 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
@@ -116,69 +116,68 @@
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
     <li><a href="#简介">简介</a></li>
-    <li><a href="#训练过程">训练过程</a></li>
+    <li><a href="#模型结构">模型结构</a></li>
     <li><a href="#实验结果">实验结果</a></li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h1 id="简介">简介</h1>
-<p>本文是增量学习的经典论文，发表于<a href="https://arxiv.org/abs/1611.07725" target="_blank" rel="noopener noreffer">CVPR 2017</a>，基于pytorch的代码在<a href="https://github.com/donlee90/icarl" target="_blank" rel="noopener noreffer">此处</a>。</p>
-<p>本文是rehearsal策略的经典算法，其核心点主要是：第一，分类采取了NME（nearest-mean-of-exemplars）；第二，基于herding的优先级筛选样例（保留距离均值更近的样例）；第三，使用知识蒸馏和原型预演进行表征学习。</p>
+<p>本文发表于<a href="https://arxiv.org/abs/1905.13260" target="_blank" rel="noopener noreffer">CVPR 2019</a>，代码<a href="https://github.com/wuyuebupt/LargeScaleIncrementalLearning" target="_blank" rel="noopener noreffer">见此</a>。</p>
+<p>本文在回溯策略上同 iCaRL 一样遵循了 herding 策略，主要致力于解决 rehearsal strategy 中新旧类不平衡问题，提出在全连接层后面增加偏置纠正（Bias Correction，简称<strong>BIC</strong>）。其公式如下：</p>
+<p>$$q_k=\begin{cases} o_k &amp; 1 \leqslant k \leqslant n \ \alpha o_k+\beta &amp; n+1 \leqslant k \leqslant n + m \end{cases}$$</p>
+<p>式中，$o_k$代表全连接层输出的logits，$\alpha$和$\beta$是可学习的偏置参数。当优化偏置参数时，本文冻结了特征提取层和全连接层使用一个很小validation set（从所有可获得的样本中分割出来的部分，<strong>保证新旧类样本平衡</strong>）来调整偏置参数，其损失函数如下：</p>
+<p>$$L_b=-\sum_{k=1}^{n+m} \delta_{y=k}log[softmax(q_k)]$$</p>
 <blockquote>
-<p>知识蒸馏由Hinton团队提出，最初用于模型间的知识迁移。由于另外一篇经典的增量学习论文<a href="https://link.springer.com/chapter/10.1007/978-3-319-46493-0_37" target="_blank" rel="noopener noreffer">LwF</a>，知识蒸馏被用到增量学习中。</p>
-<p>NME相较于nearest-class-mean(NCM)的优势在于它不需要保存所有的原始样本，而是通过计算样本的平均特征向量后。</p>
-<p>herding 策略是 rehearsal 中很常见的策略，它主张选择最靠近均值的数据以确保样例集能够代表数据的核心知识。</p>
-</blockquote>
-<p>值得一提的是，本文采用了<strong>固定样例集大小</strong>的策略来节省样例集存储空间。具体而言，对于CIFAR-100，iCaRL固定了样例集大小 $m = 2000 $，每当有新类加入，样例集中保存的各种类的数目都会按比例缩小。其筛选的标准还是基于与<strong>均值的距离</strong>。</p>
+<p>按照原文描述，之所以选择筛选出validation set用以偏执纠正层的学习，是为了将validation set从特征表示中排除，这<strong>或</strong>能使其更好的代表新旧类之间在特征空间上的无偏分布。当然，为了保证纠正层训练的无偏性，validation set中新旧类的数据量需要保持平衡。</p>
 <blockquote>
-<p>固定样例集大小的规则目前已经被广泛采纳，对于回溯而言，许多研究者们默认了采用$m=2000$的标准，例如<a href="https://arxiv.org/pdf/2002.10211.pdf" target="_blank" rel="noopener noreffer">Mnemonics Training</a></p>
+<p>原本在 Fig 5 中使用了 <font color='red'>may better</font>，这样的用词颇为鸡贼，这说明作者无法确定（或无法证明）validation set是否可以保证无偏。另一方面，validation set保证无偏对于最终的结果似乎并非好事，因为在此前的表示学习中由于新旧数据不平衡的问题，模型已经偏向了新类。因此，纠正的时候与其强调无偏，更应该强调将表示学习中的偏置给纠正回来。</p>
+<p>这或许也说明了BIC为何在CIFAR100上最终效果几无提升。</p>
 </blockquote>
-<h1 id="训练过程">训练过程</h1>
+</blockquote>
+<h1 id="模型结构">模型结构</h1>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png"
-        data-srcset="https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png, https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png 1.5x, https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png 2x"
+        data-src="https://i.loli.net/2021/06/28/nFOE6HZyGiRqDzr.png"
+        data-srcset="https://i.loli.net/2021/06/28/nFOE6HZyGiRqDzr.png, https://i.loli.net/2021/06/28/nFOE6HZyGiRqDzr.png 1.5x, https://i.loli.net/2021/06/28/nFOE6HZyGiRqDzr.png 2x"
         data-sizes="auto"
-        alt="https://i.loli.net/2021/06/19/D28mMg9qtONGlre.png"
-        title="image-20210619022437424" /></p>
-<p><strong>Algorithm 1</strong> 给出了iCaRL的增量训练过程，<strong>Algorithm 3</strong> 给出了iCaRL如何进行表示学习</p>
-<p><strong>模型</strong>：32-layer resnet (For CIFAR-100); 在特征提取部分使用CNN网络，然后是单个分类层，其 sigmoid 输出节点与迄今为止观察到的类一样多。对于任意的类 $y\in{1,&hellip;,t}$，网络的输出结果为（sigmoid层用于模型的损失函数构造，让模型参数得以训练，实际分类则采用NME）：</p>
-<p>$$g_y(x)=\frac{1}{1+exp(-\alpha(x))} \quad with \quad \alpha_y(x)=w_{y}^t\varphi(x)$$</p>
-<p><img
-        class="lazyload"
-        src="/svg/loading.min.svg"
-        data-src="https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png"
-        data-srcset="https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png, https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png 1.5x, https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png 2x"
-        data-sizes="auto"
-        alt="https://i.loli.net/2021/06/19/BpoujyxNHQIgSTf.png"
-        title="image-20210619024612911" /></p>
+        alt="https://i.loli.net/2021/06/28/nFOE6HZyGiRqDzr.png"
+        title="image-20210628164802414" /></p>
 <h1 id="实验结果">实验结果</h1>
 <p><img
         class="lazyload"
         src="/svg/loading.min.svg"
-        data-src="https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png"
-        data-srcset="https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png, https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png 1.5x, https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png 2x"
+        data-src="https://i.loli.net/2021/06/28/cmyMU5r817lL3hp.png"
+        data-srcset="https://i.loli.net/2021/06/28/cmyMU5r817lL3hp.png, https://i.loli.net/2021/06/28/cmyMU5r817lL3hp.png 1.5x, https://i.loli.net/2021/06/28/cmyMU5r817lL3hp.png 2x"
         data-sizes="auto"
-        alt="https://i.loli.net/2021/06/19/vfIwTay9RFLJ3Nj.png"
-        title="image-20210619025100005" /></p>
+        alt="https://i.loli.net/2021/06/28/cmyMU5r817lL3hp.png"
+        title="image-20210628172505880" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/06/28/mJrICi2jYZo5tu9.png"
+        data-srcset="https://i.loli.net/2021/06/28/mJrICi2jYZo5tu9.png, https://i.loli.net/2021/06/28/mJrICi2jYZo5tu9.png 1.5x, https://i.loli.net/2021/06/28/mJrICi2jYZo5tu9.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/06/28/mJrICi2jYZo5tu9.png"
+        title="image-20210628172212935" /></p>
+<p>(备注：ImageNet准确率高是因为取的是<strong>Top-5准确率</strong>)</p>
 <blockquote>
-<p><a href="https://ieeexplore.ieee.org/document/6619275" target="_blank" rel="noopener noreffer">Kuzborskij</a>等人的研究表明，在向现有的线性多类分类器中添加新类时，只要能够从所有类的<strong>少量数据</strong>中重新训练分类器，就可以避免精度损失。这说明了Rehearsal在缓解灾难性遗忘方面的效果。</p>
-<p>基于Rehearsal的研究主要有两各分关注点，其一是如何让少量数据更好的发挥作用，其二是如何筛选少量数据。</p>
+<p>从上述实验结果不难看出，BIC在小数据集如CIFAR上的提升几乎没有，但在ImageNet这样大数据集上却有比较明显的提升。作者们因此认为BIC更适合于Large Scale数据集。</p>
+<p>但实际上，在ImageNet上所采用的是Top-5准确率（有些离谱的是top-5并没有在原文中出现，笔者是在对应代码的描述中确定的），这样的评价标准虽然可以表明BIC使预测更接近真实的结果，却并不能代表实际的准确率。</p>
 </blockquote>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>更新于 2021-05-17</span>
+                <span>更新于 2021-04-22</span>
             </div>
             <div class="post-info-license"></div>
         </div>
         <div class="post-info-line">
             <div class="post-info-md"><span>
-                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/index.md" target="_blank">阅读原始文档</a>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/index.md" target="_blank">阅读原始文档</a>
                         </span></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" data-title="论文笔记——iCaRL: Incremental Classifier and Representation Learning"><i class="fab fa-evernote fa-fw"></i></a></span>
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https:%5c%5ccapablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/" data-title="论文笔记——Large Scale Incremental Learning"><i class="fab fa-evernote fa-fw"></i></a></span>
             </div>
         </div>
     </div>
@@ -190,8 +189,8 @@
         </section>
     </div>
 
-    <div class="post-nav"><a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" class="prev" rel="prev" title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning"><i class="fas fa-angle-left fa-fw"></i>论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning</a>
-            <a href="/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86/" class="next" rel="next" title="OpenGL学习笔记——基础部分">OpenGL学习笔记——基础部分<i class="fas fa-angle-right fa-fw"></i></a></div>
+    <div class="post-nav">
+            <a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" class="next" rel="next" title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning">论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 <div id="comments"></div></article></div>
             </main><footer class="footer">
