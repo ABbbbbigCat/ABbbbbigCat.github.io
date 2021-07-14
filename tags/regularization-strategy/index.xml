@@ -1,15 +1,15 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>regularization strategy - 标签 - 大猫的博客</title>
-        <link>https:\\capable.github.io/tags/regularization-strategy/</link>
+        <link>https://capablecat.github.io/tags/regularization-strategy/</link>
         <description>regularization strategy - 标签 - 大猫的博客</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>krio_d@protonmail.com (大猫)</managingEditor>
-            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Mon, 28 Jun 2021 08:32:00 &#43;0800</lastBuildDate><atom:link href="https:%5c%5ccapable.github.io/tags/regularization-strategy/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Mon, 28 Jun 2021 08:32:00 &#43;0800</lastBuildDate><atom:link href="https://capablecat.github.io/tags/regularization-strategy/" rel="self" type="application/rss+xml" /><item>
     <title>论文笔记——Continual Learning via Bit-Level Information Preserving</title>
-    <link>https:\\capable.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0continual-learning-via-bit-level-information-preserving/</link>
+    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0continual-learning-via-bit-level-information-preserving/</link>
     <pubDate>Mon, 28 Jun 2021 08:32:00 &#43;0800</pubDate>
     <author>作者</author>
-    <guid>https:\\capable.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0continual-learning-via-bit-level-information-preserving/</guid>
-    <description><![CDATA[简介 本文发表于 CVPR 2021，代码见此。 本文从信息论的角度分析了增量学习过程，提出增量学习过程中，模型经验随着模型所看到的数据积累而积累，每个模]]></description>
+    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0continual-learning-via-bit-level-information-preserving/</guid>
+    <description><![CDATA[简介 本文发表于 NAACL 2021，代码见此。 本文从信息论的角度分析了增量学习过程，提出增量学习过程中，模型经验随着模型所看到的数据积累而积累，每个模]]></description>
 </item></channel>
 </rss>

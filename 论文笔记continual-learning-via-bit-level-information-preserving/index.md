@@ -3,7 +3,7 @@
 
 # 简介
 
-本文发表于 [CVPR 2021](https://openaccess.thecvf.com/content/CVPR2021/papers/Shi_Continual_Learning_via_Bit-Level_Information_Preserving_CVPR_2021_paper.pdf)，代码[见此](https://github.com/Yujun-Shi/BLIP)。
+本文发表于 [NAACL 2021](https://openaccess.thecvf.com/content/CVPR2021/papers/Shi_Continual_Learning_via_Bit-Level_Information_Preserving_CVPR_2021_paper.pdf)，代码[见此](https://github.com/Yujun-Shi/BLIP)。
 
 本文从信息论的角度分析了增量学习过程，提出增量学习过程中，模型经验随着模型所看到的数据积累而积累，每个模型的参数推断也应该逐渐趋于确定（数据量的增加使得参数空间逐渐减小，确定性增加，熵减少）。这样，增量学习实际是由顺序传入的任务所驱动的一个递归的学习模型参数信息的过程。从这个观点来看，遗忘可以被理解为**先前任务数据提供的关于模型参数信息的丢失**。
 
