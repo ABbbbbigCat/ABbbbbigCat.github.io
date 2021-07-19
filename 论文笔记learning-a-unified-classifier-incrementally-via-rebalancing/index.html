@@ -29,7 +29,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing\/"
-        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  1146 ,
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  1199 ,
         "url": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing\/","datePublished": "2021-05-13T12:15:00+08:00","dateModified": "2021-05-13T12:15:00+08:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -106,7 +106,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Learning a Unified Classifier Incrementally via Rebalancing</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-13">2021-05-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1146 字&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-13">2021-05-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1199 字&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="true">
                 <div class="details-summary toc-title">
@@ -139,6 +139,14 @@
         alt="https://i.loli.net/2021/07/19/YofNtjpOh6vZ4u3.png"
         title="image-20210719220650265" /></p>
 <h1 id="方法">方法</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png"
+        data-srcset="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png 1.5x, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png 2x"
+        data-sizes="auto"
+        alt="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png"
+        title="image-20210720023629014" /></p>
 <h2 id="cosine-normalization">Cosine Normalization</h2>
 <p><img
         class="lazyload"
@@ -149,8 +157,8 @@
         alt="https://i.loli.net/2021/07/19/72cyeLwBpXlNSRr.png"
         title="image-20210719221355075" /></p>
 <p>如 Fig.3 所示，由于类别不平衡，新类别的embedding和bias明显高于旧类别。LUCIR提出在最后一层使用 <strong>cosine normalization</strong>：</p>
-<p>$$p_i(x)=\frac{exp(\eta&lt;\overline{\theta}_i,\overline{f}(x)&gt;)}{\sum_jexp(\eta&lt;\overline{\theta}_i,\overline{f}(x)&gt;)}$$</p>
-<p>其中，$\overline{v}=v/||v||_2$代表$l_2-normalized$向量，$&lt;\overline{v}_1,\overline{v}_2&gt;$衡量了两个标准向量的余弦相似度。引入可学习标量$η$来控制$softmax$分布的峰值，因为$&lt;\overline{v}_1,\overline{v}_2&gt;$的范围被限制在[−1, 1]。它可以有效地消除因幅度显着差异而引起的偏差。</p>
+<p>$$p_i(x)=\frac{exp(\eta&lt;\overline{\theta}_i,\overline{f}(x)&gt;)}{\sum_jexp(\eta&lt;\overline{\theta}_j,\overline{f}(x)&gt;)}$$</p>
+<p>其中，$f$是特征提取器，$\theta$是权重，$\overline{v}=v/||v||_2$代表$l_2-normalized$向量，$&lt;\overline{v}_1,\overline{v}_2&gt;=\overline{v}_1^T\overline{v}_2$衡量了两个标准向量的余弦相似度。引入可学习标量$η$来控制$softmax$分布的峰值，因为$&lt;\overline{v}_1,\overline{v}_2&gt;$的范围被限制在[−1, 1]。它可以有效地消除因幅度显着差异而引起的偏差。</p>
 <p>对于蒸馏损失，由于原始模型中的标量 $η$与当前网络中的标量 $η$ 不同，因此模拟 $softmax$ 之前的分数而不是 $softmax$ 之后的概率是合理的。 还值得注意的是，由于余弦归一化，$softmax$ 之前的分数都在相同的范围内（即 [-1, 1]），因此具有可比性。 形式上，蒸馏损失更新为：</p>
 <p>$$L_{dis}^C(x)=-\sum_{i=1}^{|C_0|}||&lt;\overline{\theta}_i,\overline{f}(x)&gt;, &lt;\overline{\theta}_i^{*},\overline{f}^{*}(x)||$$</p>
 <h2 id="less-forget-constraint">Less-Forget Constraint</h2>

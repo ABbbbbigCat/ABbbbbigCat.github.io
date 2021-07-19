@@ -11,15 +11,19 @@ LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，�
 
 # 方法
 
+![image-20210720023629014](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png)
+
+
+
 ## Cosine Normalization
 
 ![image-20210719221355075](https://i.loli.net/2021/07/19/72cyeLwBpXlNSRr.png)
 
 如 Fig.3 所示，由于类别不平衡，新类别的embedding和bias明显高于旧类别。LUCIR提出在最后一层使用 **cosine normalization**：
 
-$$p_i(x)=\frac{exp(\eta<\overline{\theta}_i,\overline{f}(x)>)}{\sum_jexp(\eta<\overline{\theta}_i,\overline{f}(x)>)}$$
+$$p_i(x)=\frac{exp(\eta<\overline{\theta}_i,\overline{f}(x)>)}{\sum_jexp(\eta<\overline{\theta}_j,\overline{f}(x)>)}$$
 
-其中，$\overline{v}=v/||v||_2$代表$l_2-normalized$向量，$<\overline{v}_1,\overline{v}_2>$衡量了两个标准向量的余弦相似度。引入可学习标量$η$来控制$softmax$分布的峰值，因为$<\overline{v}_1,\overline{v}_2>$的范围被限制在[−1, 1]。它可以有效地消除因幅度显着差异而引起的偏差。
+其中，$f$是特征提取器，$\theta$是权重，$\overline{v}=v/||v||_2$代表$l_2-normalized$向量，$<\overline{v}_1,\overline{v}_2>=\overline{v}_1^T\overline{v}_2$衡量了两个标准向量的余弦相似度。引入可学习标量$η$来控制$softmax$分布的峰值，因为$<\overline{v}_1,\overline{v}_2>$的范围被限制在[−1, 1]。它可以有效地消除因幅度显着差异而引起的偏差。
 
 对于蒸馏损失，由于原始模型中的标量 $η$与当前网络中的标量 $η$ 不同，因此模拟 $softmax$ 之前的分数而不是 $softmax$ 之后的概率是合理的。 还值得注意的是，由于余弦归一化，$softmax$ 之前的分数都在相同的范围内（即 [-1, 1]），因此具有可比性。 形式上，蒸馏损失更新为：
 
