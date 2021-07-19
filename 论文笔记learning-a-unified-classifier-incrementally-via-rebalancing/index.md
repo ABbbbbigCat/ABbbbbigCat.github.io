@@ -11,7 +11,7 @@ LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，�
 
 # 方法
 
-![image-20210720023629014](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210720023629014.png)
+![image-20210720023629014](https://i.loli.net/2021/07/20/5CwmeM7U8KrgxRY.png)
 
 
 
