@@ -160,7 +160,7 @@
 <p>$$p_i(x)=\frac{exp(\eta&lt;\overline{\theta}_i,\overline{f}(x)&gt;)}{\sum_jexp(\eta&lt;\overline{\theta}_j,\overline{f}(x)&gt;)}$$</p>
 <p>其中，$f$是特征提取器，$\theta$是权重，$\overline{v}=v/||v||_2$代表$l_2-normalized$向量，$&lt;\overline{v}_1,\overline{v}_2&gt;=\overline{v}_1^T\overline{v}_2$衡量了两个标准向量的余弦相似度。引入可学习标量$η$来控制$softmax$分布的峰值，因为$&lt;\overline{v}_1,\overline{v}_2&gt;$的范围被限制在[−1, 1]。它可以有效地消除因幅度显着差异而引起的偏差。</p>
 <p>对于蒸馏损失，由于原始模型中的标量 $η$与当前网络中的标量 $η$ 不同，因此模拟 $softmax$ 之前的分数而不是 $softmax$ 之后的概率是合理的。 还值得注意的是，由于余弦归一化，$softmax$ 之前的分数都在相同的范围内（即 [-1, 1]），因此具有可比性。 形式上，蒸馏损失更新为：</p>
-<p>$$L_{dis}^C(x)=-\sum_{i=1}^{|C_0|}||&lt;\overline{\theta}_i,\overline{f}(x)&gt;, &lt;\overline{\theta}_i^{*},\overline{f}^{*}(x)||$$</p>
+<p>$$L_{dis}^C(x)=-\sum_{i=1}^{|C_0|}||&lt;\overline{\theta}_i,\overline{f}(x)&gt;- &lt;\overline{\theta}_i^{*},\overline{f}^{*}(x)||$$</p>
 <h2 id="less-forget-constraint">Less-Forget Constraint</h2>
 <p><img
         class="lazyload"
@@ -198,7 +198,7 @@
         alt="https://i.loli.net/2021/07/19/BV7X4JrqWGmTOML.png"
         title="image-20210719230852795" /></p>
 <blockquote>
-<p>本文对于平衡性的分析可以说是很全面了，即考虑全连接层的偏置，又考虑特征偏置，同时还指出了新旧类之间存在模糊。针对这三个问题，LUCIR分别提出了三种损失函数作为约束。放缩性研究部分证明了各个损失项的有效性。不过提升比较有限，这部分的研究值得继续深挖。（当然，在样例集有限的前提下，这样的深挖也是有极限的）</p>
+<p>本文对于平衡性的分析比较全面，即考虑全连接层的偏置，又考虑特征蒸馏时的损失，同时还指出了新旧类之间存在模糊。针对这三个问题，LUCIR分别提出了三种损失函数作为约束。放缩性研究部分证明了各个损失项的有效性。不过提升比较有限，这部分的研究值得继续深挖。（当然，在样例集有限的前提下，这样的深挖也是有极限的）</p>
 </blockquote>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
