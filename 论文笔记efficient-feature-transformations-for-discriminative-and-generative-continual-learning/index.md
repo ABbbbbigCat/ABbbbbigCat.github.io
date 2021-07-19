@@ -13,7 +13,7 @@
 
 ![image-20210715191528095](https://i.loli.net/2021/07/16/S8zsOdmCNFMl7rZ.png)
 
-本文将参数分成了glbal parameter $\theta$和task-specific local parameter $\tau_t$，在训练任务t时，$\theta$和$\tau_{1:t-1}$保持不变，只有$\tau_t$被训练。Fig 1 center 是另一种参数化方法，它并行计算这些特征校准（图1，中间），使变换增加而不是合成。公式如下：
+本文将参数分成了glbal parameter $\theta$和task-specific local parameter $\tau_t$，在训练任务t时，$\theta$和$\tau_{1:t-1}$保持不变，只有$\tau_t$被训练。Fig 1 center 是另一种参数化方法，它并行计算这些特征校准，使变换增加而不是合成。公式如下：
 
 $$H^{'}=(W*I)\bigoplus(\tau^l_t*I)$$
 
@@ -31,7 +31,11 @@ $$H^{'}=(W*I)\bigoplus(\tau^l_t*I)$$
 
 对于CIL这种情况，本文采用了通过分类时的最大置信度预测（maximum confidence prediction）的来选择$\tau_t$。然而，由于典型的交叉熵训练目标倾向于在确定性神经网络中产生高置信度（即使对于分布外（OoD, out-of-distribution）样本），故softmax预测熵的简单直接测量通常表现不佳[1]。为了解决这个问题，本文提出了一种简单的正则化方式来最大化特征距离，以提高任务预测能力:
 
+
+
 $$L_M=\sum_{i=1}^{t-1}max(\Delta-KL(P_t||Q_i),0)$$
+
+
 
 其中 $P_t = N(μ_t,Σ_t) $和 $Q_i = N(μ_i,Σ_i)$ 是当前任务$t$ 和较早任务 $i < t$ 的分布。 该正则化项帮助模型学习 $τ_t$ 的表示，使得当前任务数据 ($D_t$) 在特征空间中与由先前任务的参数 $τ<t$ 编码的特征至少具有$∆$可分离性。
 
