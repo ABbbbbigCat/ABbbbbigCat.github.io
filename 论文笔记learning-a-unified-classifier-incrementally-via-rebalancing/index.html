@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>论文笔记——Learning a Unified Classifier Incrementally via Rebalancing - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing" />
+<meta property="og:description" content="简介 本文发表于CVPR 2019，复现代码见此。 LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，本文指出不平衡的数据主要带" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" /><meta property="og:image" content="https://capablecat.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-13T12:15:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-13T12:15:00&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://capablecat.github.io/logo.png"/>
+
+<meta name="twitter:title" content="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing"/>
+<meta name="twitter:description" content="简介 本文发表于CVPR 2019，复现代码见此。 LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，本文指出不平衡的数据主要带"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" /><link rel="prev" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" /><link rel="next" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "论文笔记——Learning a Unified Classifier Incrementally via Rebalancing",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  1146 ,
+        "url": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing\/","datePublished": "2021-05-13T12:15:00+08:00","dateModified": "2021-05-13T12:15:00+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/"> 主页 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/" title="">主页</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Learning a Unified Classifier Incrementally via Rebalancing</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-13">2021-05-13</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1146 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#方法">方法</a>
+      <ul>
+        <li><a href="#cosine-normalization">Cosine Normalization</a></li>
+        <li><a href="#less-forget-constraint">Less-Forget Constraint</a></li>
+        <li><a href="#inter-class-separation">Inter-Class Separation</a></li>
+        <li><a href="#integrated-objective">Integrated Objective</a></li>
+      </ul>
+    </li>
+    <li><a href="#实验">实验</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="简介">简介</h1>
+<p>本文发表于<a href="" rel="">CVPR 2019</a>，复现代码<a href="https://github.com/hshustc/CVPR19_Incremental_Learning" target="_blank" rel="noopener noreffer">见此</a>。</p>
+<p>LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，本文指出不平衡的数据主要带来了三种问题：(1) 量级不平衡：新类权重向量的量级明显高于旧类； (2) 偏差：之前的知识，即旧类的特征和权重向量之间的关系没有很好地保留； (3)歧义：新类的权重向量与旧类的权重向量接近，往往会导致歧义。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719220650265.png"
+        data-srcset="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719220650265.png, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719220650265.png 1.5x, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719220650265.png 2x"
+        data-sizes="auto"
+        alt="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719220650265.png"
+        title="image-20210719220650265" /></p>
+<h1 id="方法">方法</h1>
+<h2 id="cosine-normalization">Cosine Normalization</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719221355075.png"
+        data-srcset="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719221355075.png, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719221355075.png 1.5x, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719221355075.png 2x"
+        data-sizes="auto"
+        alt="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719221355075.png"
+        title="image-20210719221355075" /></p>
+<p>如 Fig.3 所示，由于类别不平衡，新类别的embedding和bias明显高于旧类别。LUCIR提出在最后一层使用 <strong>cosine normalization</strong>：</p>
+<p>$$p_i(x)=\frac{exp(\eta&lt;\overline{\theta}_i,\overline{f}(x)&gt;)}{\sum_jexp(\eta&lt;\overline{\theta}_i,\overline{f}(x)&gt;)}$$</p>
+<p>其中，$\overline{v}=v/||v||_2$代表$l_2-normalized$向量，$&lt;\overline{v}_1,\overline{v}_2&gt;$衡量了两个标准向量的余弦相似度。引入可学习标量$η$来控制$softmax$分布的峰值，因为$&lt;\overline{v}_1,\overline{v}_2&gt;$的范围被限制在[−1, 1]。它可以有效地消除因幅度显着差异而引起的偏差。</p>
+<p>对于蒸馏损失，由于原始模型中的标量 $η$与当前网络中的标量 $η$ 不同，因此模拟 $softmax$ 之前的分数而不是 $softmax$ 之后的概率是合理的。 还值得注意的是，由于余弦归一化，$softmax$ 之前的分数都在相同的范围内（即 [-1, 1]），因此具有可比性。 形式上，蒸馏损失更新为：</p>
+<p>$$L_{dis}^C(x)=-\sum_{i=1}^{|C_0|}||&lt;\overline{\theta}_i,\overline{f}(x)&gt;, &lt;\overline{\theta}_i^{*},\overline{f}^{*}(x)||$$</p>
+<h2 id="less-forget-constraint">Less-Forget Constraint</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719224038625.png"
+        data-srcset="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719224038625.png, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719224038625.png 1.5x, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719224038625.png 2x"
+        data-sizes="auto"
+        alt="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719224038625.png"
+        title="image-20210719224038625" /></p>
+<p>如 Fig.4 所示，$L^C_{dis}$主要考虑局部几何结构，即归一化特征与旧类嵌入之间的夹角，此约束无法阻止嵌入和特征完全旋转。为了加强对已有知识的约束，LUCIR建议修复旧的类嵌入，并计算一个新的特征提取损失，如下所示：</p>
+<p>$$L^G_{dis}(x)=1-&lt;\overline{f}^*(x),\overline{f}(x)&gt;$$</p>
+<p>其中 $\overline{f}^*(x)$ 和$ \overline{f}(x)$ 分别是原始模型和当前模型提取的归一化特征。</p>
+<h2 id="inter-class-separation">Inter-Class Separation</h2>
+<p>为了避免新类和旧类之间的模糊性，LUCIR引入了一个边缘排序损失（margin ranking loss），以确保它们能够很好地分离：</p>
+<p>$$L_{mr}=\sum_{k=1}^Kmax(m-&lt;\overline{\theta}(x),\overline{f}(x)&gt;+&lt;\overline{\theta}^k,\overline{f}(x)&gt;,0)$$</p>
+<p>其中$m$是边缘阈值，$\overline{θ}(x)$是$x$的ground-truth class embedding，$θ^k$是被选为$x$的hard negatives的top-k个新类嵌入之一。</p>
+<h2 id="integrated-objective">Integrated Objective</h2>
+<p>$$L=\frac{1}{N}\sum_{x\in N}(L_{ce}(x)+\lambda L_{dis}^G(x))+\frac{1}{N_0}\sum{x \in N_0}L_{mr}(x)$$</p>
+<p>其中，N是 $\chi$ 中抽取的训练批次，$N_o \subset N$是样例集，$\lambda=\lambda_{base}\sqrt{|C_n|/|C_o|}$ 是损失权重（$\lambda_{base}$是每个数据集的固定常量，$|C|$是类别数目）</p>
+<h1 id="实验">实验</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230737084.png"
+        data-srcset="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230737084.png, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230737084.png 1.5x, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230737084.png 2x"
+        data-sizes="auto"
+        alt="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230737084.png"
+        title="image-20210719230737084" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230852795.png"
+        data-srcset="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230852795.png, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230852795.png 1.5x, C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230852795.png 2x"
+        data-sizes="auto"
+        alt="C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230852795.png"
+        title="image-20210719230852795" /></p>
+<blockquote>
+<p>本文对于平衡性的分析可以说是很全面了，即考虑全连接层的偏置，又考虑特征偏置，同时还指出了新旧类之间存在模糊。针对这三个问题，LUCIR分别提出了三种损失函数作为约束。放缩性研究部分证明了各个损失项的有效性。不过提升比较有限，这部分的研究值得继续深挖。（当然，在样例集有限的前提下，这样的深挖也是有极限的）</p>
+</blockquote>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-05-13</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/" data-title="论文笔记——Learning a Unified Classifier Incrementally via Rebalancing"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/incremental-learning/">incremental learning</a>,&nbsp;<a href="/tags/rehearsal-strategy/">rehearsal strategy</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/" class="prev" rel="prev" title="论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning"><i class="fas fa-angle-left fa-fw"></i>论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning</a>
+            <a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0icarl/" class="next" rel="next" title="论文笔记——iCaRL: Incremental Classifier and Representation Learning">论文笔记——iCaRL: Incremental Classifier and Representation Learning<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">大猫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
