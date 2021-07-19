@@ -1,0 +1,17 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>object detection - 标签 - 大猫的博客</title>
+        <link>https://capablecat.github.io/tags/object-detection/</link>
+        <description>object detection - 标签 - 大猫的博客</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>krio_d@protonmail.com (大猫)</managingEditor>
+            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Tue, 23 Jul 2019 16:40:00 &#43;0000</lastBuildDate><atom:link href="https://capablecat.github.io/tags/object-detection/" rel="self" type="application/rss+xml" /><item>
+    <title>Some methods of Object Recognition</title>
+    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0some_methods_of_obeject_detection/</link>
+    <pubDate>Tue, 23 Jul 2019 16:40:00 &#43;0000</pubDate>
+    <author>作者</author>
+    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0some_methods_of_obeject_detection/</guid>
+    <description><![CDATA[<p>本文旨在总结诸如Selective Search、R-CNN等对象识别方法的主要思想。</p>
+<h2 id="selctive-search">Selctive Search</h2>
+<p>该方法的目的是对象识别，也就是说在一张图片里找出对象所在的区域，并识别他。其主要思想：先利用已知的、计算复杂度较低的一种算法将原图片划分为很多个小型区域，之后计算一个区与其领域的相关性，若相关性满足初始设置好的阈值，则将二者合并，遍历的进行这一操作，直到无法合并为止。并在此过程中，对每一个区域进行对象识别，若成功找到对象则保留结果。</p>]]></description>
+</item></channel>
+</rss>

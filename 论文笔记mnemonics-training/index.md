@@ -11,7 +11,7 @@
 
 > 提出 Mnemonics 的背景是其他数据筛选方式（herding, random）的性能并不算好，作者利用TSNE可视化（见fig.1）指出 Mnemonics 相较而言能更好地保存数据的边界信息。（其实这个说法有些奇怪，毕竟对于 herding 而言，其留存的数据集靠近中心是正常现象，因为它就是基于均值进行采样的。不过本文最后的实验结果确实较好，这佐证了作者的论证） 
 
-![image-20210630220530620](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210630220530620.png)
+![image-20210630220530620](https://i.loli.net/2021/07/19/erObGgcP5nWxi2h.png)
 
 # 训练过程
 
