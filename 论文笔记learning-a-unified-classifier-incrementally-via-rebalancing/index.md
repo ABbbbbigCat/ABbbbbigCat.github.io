@@ -7,13 +7,13 @@
 
 LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，本文指出不平衡的数据主要带来了三种问题：(1) 量级不平衡：新类权重向量的量级明显高于旧类； (2) 偏差：之前的知识，即旧类的特征和权重向量之间的关系没有很好地保留； (3)歧义：新类的权重向量与旧类的权重向量接近，往往会导致歧义。
 
-![image-20210719220650265](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719220650265.png)
+![image-20210719220650265](https://i.loli.net/2021/07/19/YofNtjpOh6vZ4u3.png)
 
 # 方法
 
 ## Cosine Normalization
 
-![image-20210719221355075](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719221355075.png)
+![image-20210719221355075](https://i.loli.net/2021/07/19/72cyeLwBpXlNSRr.png)
 
 如 Fig.3 所示，由于类别不平衡，新类别的embedding和bias明显高于旧类别。LUCIR提出在最后一层使用 **cosine normalization**：
 
@@ -29,7 +29,7 @@ $$L_{dis}^C(x)=-\sum_{i=1}^{|C_0|}||<\overline{\theta}_i,\overline{f}(x)>, <\ove
 
 ## Less-Forget Constraint
 
-![image-20210719224038625](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719224038625.png)
+![image-20210719224038625](https://i.loli.net/2021/07/19/fNjc29xYGh5iFI8.png)
 
 如 Fig.4 所示，$L^C_{dis}$主要考虑局部几何结构，即归一化特征与旧类嵌入之间的夹角，此约束无法阻止嵌入和特征完全旋转。为了加强对已有知识的约束，LUCIR建议修复旧的类嵌入，并计算一个新的特征提取损失，如下所示：
 
@@ -57,9 +57,9 @@ $$L=\frac{1}{N}\sum_{x\in N}(L_{ce}(x)+\lambda L_{dis}^G(x))+\frac{1}{N_0}\sum{x
 
 # 实验
 
-![image-20210719230737084](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230737084.png)
+![image-20210719230737084](https://i.loli.net/2021/07/19/mse5tROdSA64hWn.png)
 
-![image-20210719230852795](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210719230852795.png)
+![image-20210719230852795](https://i.loli.net/2021/07/19/BV7X4JrqWGmTOML.png)
 
 
 
