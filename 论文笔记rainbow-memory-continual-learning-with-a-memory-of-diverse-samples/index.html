@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples" />
+<meta property="og:description" content="简介 本文发表于 CVPR 2021，代码见此。 本文聚焦于 rehearsal 策略中样本筛选问题，作者认为，被选择存储在内存中的样本不仅应该代表它们对应的类别，而且应该区" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" /><meta property="og:image" content="https://capablecat.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-20T08:32:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-07-20T08:32:00&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://capablecat.github.io/logo.png"/>
+
+<meta name="twitter:title" content="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples"/>
+<meta name="twitter:description" content="简介 本文发表于 CVPR 2021，代码见此。 本文聚焦于 rehearsal 策略中样本筛选问题，作者认为，被选择存储在内存中的样本不仅应该代表它们对应的类别，而且应该区"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" /><link rel="prev" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0efficient-feature-transformations-for-discriminative-and-generative-continual-learning/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy","wordcount":  1116 ,
+        "url": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples\/","datePublished": "2021-07-20T08:32:00+08:00","dateModified": "2021-07-20T08:32:00+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/"> 主页 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/" title="">主页</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-20">2021-07-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1116 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#简介">简介</a></li>
+    <li><a href="#方法">方法</a>
+      <ul>
+        <li><a href="#diversity-aware-memory-update">Diversity-Aware Memory Update</a></li>
+        <li><a href="#diversity-enhancement-by-augmentation">Diversity Enhancement by Augmentation</a>
+          <ul>
+            <li><a href="#mixed-label-data-augmentation">Mixed-Label Data Augmentation</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#实验">实验</a></li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="简介">简介</h1>
+<p>本文发表于 <a href="https://arxiv.org/pdf/2103.17230.pdf" target="_blank" rel="noopener noreffer">CVPR 2021</a>，代码<a href="https://github.com/clovaai/rainbow-memory" target="_blank" rel="noopener noreffer">见此</a>。</p>
+<p>本文聚焦于 rehearsal 策略中样本筛选问题，作者认为，被选择存储在内存中的样本不仅应该代表它们对应的类别，而且应该区别于其他类别。 为了选择这样的样本，作者认为靠近分类边界的样本最具辨别力，靠近分布中心的样本最具代表性。</p>
+<p>为了满足这两个特征，本文提出对特征空间中不同的样本进行采样，提出一种新的多样性感知采样方法，通过利用分类不确定性有效管理容量有限的内存。另外，为了进一步提升样本多样性，本文建议采用 data augmentation。</p>
+<p>另外，如 Fig 2 所示，本文针对现实中更可能的增量环境 Blurry-CIL (每次新任务中也会包含少量之前看过的类别，任务与任务之间并非完全隔绝的) 做了研究，探讨了该环境下的增量学习问题。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/lP3W4K5f8YqUv7G.png"
+        data-srcset="https://i.loli.net/2021/07/21/lP3W4K5f8YqUv7G.png, https://i.loli.net/2021/07/21/lP3W4K5f8YqUv7G.png 1.5x, https://i.loli.net/2021/07/21/lP3W4K5f8YqUv7G.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/lP3W4K5f8YqUv7G.png"
+        title="image-20210721094358900" /></p>
+<h1 id="方法">方法</h1>
+<h2 id="diversity-aware-memory-update">Diversity-Aware Memory Update</h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/ZESHutlRgJIL2pA.png"
+        data-srcset="https://i.loli.net/2021/07/21/ZESHutlRgJIL2pA.png, https://i.loli.net/2021/07/21/ZESHutlRgJIL2pA.png 1.5x, https://i.loli.net/2021/07/21/ZESHutlRgJIL2pA.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/ZESHutlRgJIL2pA.png"
+        title="image-20210721020321281" /></p>
+<p>为了确保多样性，需要估计每个样本在类别判别特征空间中的相对位置。 但是计算特征的相对位置在计算上是昂贵的，因为它需要计算样本到样本的距离 $(O(N^2))$。 相反，本文建议通过分类模型估计的样本的不确定性来估计相对位置，<strong>即假设模型的更确定样本将位于更靠近类分布中心的位置，反之亦然</strong>。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/HyhQXvuPOoxkJLZ.png"
+        data-srcset="https://i.loli.net/2021/07/21/HyhQXvuPOoxkJLZ.png, https://i.loli.net/2021/07/21/HyhQXvuPOoxkJLZ.png 1.5x, https://i.loli.net/2021/07/21/HyhQXvuPOoxkJLZ.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/HyhQXvuPOoxkJLZ.png"
+        title="image-20210721021132678" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/rOCSZeHTV2Uk1cP.png"
+        data-srcset="https://i.loli.net/2021/07/21/rOCSZeHTV2Uk1cP.png, https://i.loli.net/2021/07/21/rOCSZeHTV2Uk1cP.png 1.5x, https://i.loli.net/2021/07/21/rOCSZeHTV2Uk1cP.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/rOCSZeHTV2Uk1cP.png"
+        title="image-20210721021156121" /></p>
+<p>Algorithm 1 给出了样例更新的流程，其中公式 4 如上所示。在公式4中，$u(x)$ 表示样本 $x$ 的不确定性，$S_c$ 是类别 $c$ 是预测的 top-1 类别的次数。$1_c$ 表示二进制索引向量。 值较低的 $u(x)$ 对应于扰动上更一致的 top-1 类，表明 $x$ 位于模型非常自信的区域。</p>
+<p>公式 4 的思想很直观，如 Fig 3 所示，对输入施加扰动，然后计算扰动样本 $\tilde{x}$ 被推断为正确类的次数 $S_c$，最后计算得到 $u(x)$。显然，$Sc$越大，$u(x)$越小，从而不确定性越小。</p>
+<h2 id="diversity-enhancement-by-augmentation">Diversity Enhancement by Augmentation</h2>
+<h3 id="mixed-label-data-augmentation">Mixed-Label Data Augmentation</h3>
+<p>随着任务迭代的进行，新任务中的样本可能遵循与情景记忆中的样本（即之前的任务）不同的分布。RW采用混合标记的 DA (data augmentation) 来“混合”新任务类中的图像和内存中旧类的样本。 这种混合标签 DA 减轻了由任务上的类分布变化引起的副作用并提高了性能。</p>
+<p>作为代表性的混合标记 DA 方法之一，CutMix [1] 生成混合样本和平滑标签，给定一组监督样本 $(x1, y1)$ 和 $(x2, y2)$，如下所示：</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/L2PTVtFGdBbRK1k.png"
+        data-srcset="https://i.loli.net/2021/07/21/L2PTVtFGdBbRK1k.png, https://i.loli.net/2021/07/21/L2PTVtFGdBbRK1k.png 1.5x, https://i.loli.net/2021/07/21/L2PTVtFGdBbRK1k.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/L2PTVtFGdBbRK1k.png"
+        title="image-20210721091936649" /></p>
+<p>其中，集合 $m$ 表示根据从beta分布中提取的超参数$β$为图像x1随机选择的像素区域。如（5）所示，混合标签DA生成的人工样本很难被<strong>视为源图像的变体</strong>，这与传统数据增强不同，传统数据增强在不破坏类边界的情况下通过翻转、旋转和/或对比操作原始图像。</p>
+<p><strong>Automated Data Augmentation.</strong> 除了上述混合标记的 DAs 之外，RW进一步使用 AutoDA 通过在 CIL 下将多个 DA 合成到模型性能上来丰富增强效果。 特别是，文章采用 AutoAugment [2]，提供用于确定增强次数及其幅度的参数。（[2] 就是一种自动化增强数据的方法）</p>
+<h1 id="实验">实验</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/SH1pDmVQ2I5uEwo.png"
+        data-srcset="https://i.loli.net/2021/07/21/SH1pDmVQ2I5uEwo.png, https://i.loli.net/2021/07/21/SH1pDmVQ2I5uEwo.png 1.5x, https://i.loli.net/2021/07/21/SH1pDmVQ2I5uEwo.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/SH1pDmVQ2I5uEwo.png"
+        title="image-20210721093917952" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/jCwuA2PG3c1LnV4.png"
+        data-srcset="https://i.loli.net/2021/07/21/jCwuA2PG3c1LnV4.png, https://i.loli.net/2021/07/21/jCwuA2PG3c1LnV4.png 1.5x, https://i.loli.net/2021/07/21/jCwuA2PG3c1LnV4.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/jCwuA2PG3c1LnV4.png"
+        title="image-20210721094022338" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/21/o3stUaXjSqgpV98.png"
+        data-srcset="https://i.loli.net/2021/07/21/o3stUaXjSqgpV98.png, https://i.loli.net/2021/07/21/o3stUaXjSqgpV98.png 1.5x, https://i.loli.net/2021/07/21/o3stUaXjSqgpV98.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/21/o3stUaXjSqgpV98.png"
+        title="image-20210721094158125" /></p>
+<h1 id="参考">参考</h1>
+<ol>
+<li><a href="https://arxiv.org/abs/1905.04899" target="_blank" rel="noopener noreffer">Sangdoo Yun, Dongyoon Han, Seong Joon Oh, Sanghyuk Chun, Junsuk Choe, and Youngjoon Yoo. Cutmix: Regularization strategy to train strong classifiers with localizable features. In ICCV, pages 6023–6032, 2019.</a></li>
+<li><a href="https://openaccess.thecvf.com/content_CVPR_2019/html/Cubuk_AutoAugment_Learning_Augmentation_Strategies_From_Data_CVPR_2019_paper.html" target="_blank" rel="noopener noreffer">Ekin D. Cubuk, Barret Zoph, Dandelion Mane, Vijay Vasudevan, and Quoc V. Le. AutoAugment: Learning augmentation strategies from data. In CVPR, June 2019. </a></li>
+</ol>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-07-20</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" data-title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/incremental-learning/">incremental learning</a>,&nbsp;<a href="/tags/rehearsal-strategy/">rehearsal strategy</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0efficient-feature-transformations-for-discriminative-and-generative-continual-learning/" class="prev" rel="prev" title="论文笔记——Efficient Feature Transformations for Discriminative and Generative Continual Learning"><i class="fas fa-angle-left fa-fw"></i>论文笔记——Efficient Feature Transformations for Discriminative and Generative Continual Learning</a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">大猫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
