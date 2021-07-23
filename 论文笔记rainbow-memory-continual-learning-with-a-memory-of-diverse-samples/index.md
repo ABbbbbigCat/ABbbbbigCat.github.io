@@ -59,11 +59,11 @@ Algorithm 1 给出了样例更新的流程，其中公式 4 如上所示。在�
 
 # 实验
 
-![image-20210721093917952](https://i.loli.net/2021/07/21/SH1pDmVQ2I5uEwo.png)
+![image-20210724011035622](https://i.loli.net/2021/07/24/sFJ6tIkbHxRjSzo.png)
 
-![image-20210721094022338](https://i.loli.net/2021/07/21/jCwuA2PG3c1LnV4.png)
+![image-20210724011200175](https://i.loli.net/2021/07/24/bH5QCoAd7jXn8Pr.png)
 
-![image-20210721094158125](https://i.loli.net/2021/07/21/o3stUaXjSqgpV98.png)
+> 实验结果显示本方法在 online CIL中有效，而在offline CIL中无效。为什么会出现这种情况，文章并未解释。
 
 
 
@@ -72,4 +72,9 @@ Algorithm 1 给出了样例更新的流程，其中公式 4 如上所示。在�
 1. [Sangdoo Yun, Dongyoon Han, Seong Joon Oh, Sanghyuk Chun, Junsuk Choe, and Youngjoon Yoo. Cutmix: Regularization strategy to train strong classifiers with localizable features. In ICCV, pages 6023–6032, 2019.](https://arxiv.org/abs/1905.04899)
 2. [Ekin D. Cubuk, Barret Zoph, Dandelion Mane, Vijay Vasudevan, and Quoc V. Le. AutoAugment: Learning augmentation strategies from data. In CVPR, June 2019. ](https://openaccess.thecvf.com/content_CVPR_2019/html/Cubuk_AutoAugment_Learning_Augmentation_Strategies_From_Data_CVPR_2019_paper.html)
 
+
+
+# 附录
+
+online CIL: 在在线模式中，除了被选为样本的样本外，传入样本仅呈现给模型一次，因为它没有足够大的缓冲区来保存整个流样本。
 
