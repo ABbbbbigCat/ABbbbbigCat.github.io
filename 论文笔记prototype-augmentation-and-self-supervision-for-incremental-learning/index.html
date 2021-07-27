@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning" />
+<meta property="og:description" content="一、简介 本文发表于 CVPR 2021，随文代码见此。 本文指出了增量学习过程中 task-level overfitting phenomenon。直观上，这是说模型在训练当前任务的时候，只会专" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" /><meta property="og:image" content="https://capablecat.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-27T14:10:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-07-27T14:10:00&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://capablecat.github.io/logo.png"/>
+
+<meta name="twitter:title" content="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning"/>
+<meta name="twitter:description" content="一、简介 本文发表于 CVPR 2021，随文代码见此。 本文指出了增量学习过程中 task-level overfitting phenomenon。直观上，这是说模型在训练当前任务的时候，只会专"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" /><link rel="prev" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy, self-supervised learning","wordcount":  1855 ,
+        "url": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning\/","datePublished": "2021-07-27T14:10:00+08:00","dateModified": "2021-07-27T14:10:00+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/"> 主页 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/" title="">主页</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-27">2021-07-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1855 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一简介">一、简介</a></li>
+    <li><a href="#二方法论">二、方法论</a>
+      <ul>
+        <li><a href="#1-prototype-augmentation">1. Prototype Augmentation</a></li>
+        <li><a href="#2-ssl-based-label-augmentaion">2. SSL based Label Augmentaion</a></li>
+        <li><a href="#3-integrated-objective-of-pass">3. Integrated Objective of PASS</a></li>
+      </ul>
+    </li>
+    <li><a href="#三初步实验">三、初步实验</a></li>
+    <li><a href="#四实验">四、实验</a></li>
+    <li><a href="#参考">参考</a></li>
+    <li><a href="#附录">附录</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="一简介">一、简介</h1>
+<p>本文发表于 <a href="https://openaccess.thecvf.com/content/CVPR2021/papers/Zhu_Prototype_Augmentation_and_Self-Supervision_for_Incremental_Learning_CVPR_2021_paper.pdf" target="_blank" rel="noopener noreffer">CVPR 2021</a>，随文代码<a href="https://github.com/Impression2805/CVPR21_PASS" target="_blank" rel="noopener noreffer">见此</a>。</p>
+<p>本文指出了增量学习过程中 <strong>task-level overfitting phenomenon</strong>。直观上，这是说模型在训练当前任务的时候，只会专注于捕获对当前分类任务有用的信息，而可能忽略那些在当前对于区分度贡献度较小但却会影响未来训练的信息。由于增量学习通常会使用之前模型来初始化当前模型，因此之前任务的 task-level overfitting 会影响后续模型训练。[1] 的研究发现，使用存储的样本从零开始训练的模型可以出人意料地优于许多最近提出的算法。这项研究揭示了之前的模型（主要 携带 task-specific features）可能是一对于当前任务糟糕的初始化选择，如 Fig 1 (b) 所示。因此，该模型需要更多的更新才能很好地执行当前任务，这在另一方面增加了遗忘问题。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/cDVWO5rH2ujo9k1.png"
+        data-srcset="https://i.loli.net/2021/07/27/cDVWO5rH2ujo9k1.png, https://i.loli.net/2021/07/27/cDVWO5rH2ujo9k1.png 1.5x, https://i.loli.net/2021/07/27/cDVWO5rH2ujo9k1.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/cDVWO5rH2ujo9k1.png"
+        title="image-20210727142045409" /></p>
+<p>基于上述分析，本文提出通过维护决策边界和减少 task-level overfitting phenomenon 来提高 CIL 的性能，如 Fig 1 (a) 所示。本文所提出的 <strong>PASS</strong> 主要包括：1）Prototype Augmentation; 2) Self-Supervision。</p>
+<p>一方面，ProtoAug 记忆了一个 class-representative prototype (通常指类在深层特征空间中的平均值)，并且在学习新类时通过高斯噪声增强记忆原型。然后将增量原型和新数据的深度特征一起联合训练以维护新旧类的区分和平衡。（这么做受到最近一项长尾识别工作 [2] 的启发，该工作通过增加带有特定扰动的尾类来扩展尾类的分布）</p>
+<p>另一方面，受到 Self-supervised learning (SSL) 对缓解任务水平过度拟合现象的启示，本文建议利用 SSL 的优势来学习 task-agnostic and transferable representation。（直观地说，使用SSL，不同的任务在参数空间中会更接近，并且在当前任务上训练的模型会更好地初始化学习下一个任务）</p>
+<blockquote>
+<p>值得一提的是，本文仅仅保留了 class prototype，没有使用 memory size。在增量训练中，通过 将 Prototype Augmentation 反馈给分类器用于监督学习。</p>
+</blockquote>
+<h1 id="二方法论">二、方法论</h1>
+<h2 id="1-prototype-augmentation">1. Prototype Augmentation</h2>
+<p><strong>Compute prototype</strong>	$\mu_{t,k}=\frac{1}{N_{t,k}}\sum_{n=1}^{N_t,k}F(X_{t,k};\theta_t)$​</p>
+<p><strong>ProtoAug</strong>	$F_{t_{old},k_{old}}=\mu_{t_{old},k_old}+e*r$</p>
+<p>其中，$e\sim N(0,1)$​ 派生自高斯噪声，其维度和 prototype 一致。$r$​ 是控制 augmented prototypes 不确定性的尺度。特别地，尺度 $r$​​​ 可以预定义，或者计算为 class representations 的平均方差：</p>
+<p>$$r_t^2=\frac{1}{K_{old}+K_{new}}(K_{old}*r_{t-1}^2+\sum_{k=1}^{k_{new}}\frac{Tr(\sum_{t,k})}{D})$$</p>
+<p>其中，$K_{old}$​ 和 $K_{new}$​ 分别代表旧类数目和新类数目。$D$​ 是深度特征空间的维度。$\sum_{t,k}$​ 是 $t$​ 阶段 $k$​ 类特征的协方差矩阵，$Tr$​ 运算计算矩阵的迹。作者观察到 $r_t$​​​ 在 CIL 实验过程中的不同阶段略有变化。 因此，只能计算和使用第一个任务中特征的平均方差：$r^2=r_1^2=\frac{1}{K_1*D}\sum_{k=1}^{K_1}Tr(\sum_{1,k})$</p>
+<p>之后，将新类特征和增广原型反馈给统一分类器：</p>
+<p>$$\left{\theta_t,\phi_t\right}=\arg min_{\theta_t,\phi_t}\left{L_{t,ce}+L_{t,protoAug}\right}=\arg min_{\theta_t,\phi_t}\left{L_t(G(F(X_t;\theta_t);\phi_t),Y_t)+\sum_{i=1}^{t-1}L(G(F_i;\phi_t),Y_i) \right}$$</p>
+<p>其中，$F_i$代表旧类集 $C_i$增加的特征</p>
+<h2 id="2-ssl-based-label-augmentaion">2. SSL based Label Augmentaion</h2>
+<p>受 [3] 的启发，本文简单地通过基于 SSL 扩充当前类来学习统一模型。 具体来说，对于每个类，将其训练数据旋转 90、180 和 270 度以生成 3 个新类，将原始 K 类问题扩展为新的 4K 类问题：</p>
+<p>$$X_t^{'}=rotate(X_t,\theta),\quad \theta \in \left{90,180,27\right}$$</p>
+<p>上述方法在同时学习原始任务和自监督任务的过程中放松了一定的不变约束，有利于学习更丰富的特征。实验结果表明，这种简单的方法可以提高CIL的性能。</p>
+<h2 id="3-integrated-objective-of-pass">3. Integrated Objective of PASS</h2>
+<p><strong>Knowledge distillation</strong>	$L_{t,kd}=||F_t(X_t^{'};\theta_t)-F_{t-1}(X_t^{'};\theta_{t-1})||$</p>
+<p><strong>PASS</strong>	$L_{t,total}=L_{t,ce}+\lambda*L_{t,protAug}+\gamma*L_{t,kd}$</p>
+<h1 id="三初步实验">三、初步实验</h1>
+<p>为了验证 ProtoAug 和 SSL 的有效性，本文分别在 MNIST 和 CIFAR 10 / CIFAR 100 上进行了实验。Fig 3 表明 ProtoAug 有助于模型更好的划分边界；Table 1 证明了 SSL 的有效性</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/ZvMrOlHwjbBaR1c.png"
+        data-srcset="https://i.loli.net/2021/07/27/ZvMrOlHwjbBaR1c.png, https://i.loli.net/2021/07/27/ZvMrOlHwjbBaR1c.png 1.5x, https://i.loli.net/2021/07/27/ZvMrOlHwjbBaR1c.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/ZvMrOlHwjbBaR1c.png"
+        title="image-20210727171733210" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/bgMIvzS13HVp5P9.png"
+        data-srcset="https://i.loli.net/2021/07/27/bgMIvzS13HVp5P9.png, https://i.loli.net/2021/07/27/bgMIvzS13HVp5P9.png 1.5x, https://i.loli.net/2021/07/27/bgMIvzS13HVp5P9.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/bgMIvzS13HVp5P9.png"
+        title="image-20210727172312004" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/MO8ktG6CEquzSQ7.png"
+        data-srcset="https://i.loli.net/2021/07/27/MO8ktG6CEquzSQ7.png, https://i.loli.net/2021/07/27/MO8ktG6CEquzSQ7.png 1.5x, https://i.loli.net/2021/07/27/MO8ktG6CEquzSQ7.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/MO8ktG6CEquzSQ7.png"
+        title="image-20210727173018908" /></p>
+<p>如 Fig. 4 所示，对于未见过的类，SSL 导致新类的内部距离更小，这意味着使用 SSL 学习的模型在新类上的泛化能力优于 baseline。 而对于训练类，基线具有更紧凑的特征分布。 这表明过度的特征压缩可能会损害新类泛化的表示学习。Fig 4 (d) 表明 SSL 导致更高的特征空间密度 $π_{ratio}$，泛化的改进与 [4] 中的观察一致。</p>
+<blockquote>
+<p>这部分的设计很有启发，从方法本身的角度来看，本文提出的 ProtoAug 和 SSL 并不新颖，其中也没有很具原创性的数学表达。人工智能领域下的理论论证向来不容易，于是本文通过实验章节前的“初步实验”系统的从可视化的角度论证了方法的有效性。（尽管实际上最直观的还是边界清晰与否，样本紧凑程度）</p>
+</blockquote>
+<h1 id="四实验">四、实验</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/x7CZpnEi1chQG6D.png"
+        data-srcset="https://i.loli.net/2021/07/27/x7CZpnEi1chQG6D.png, https://i.loli.net/2021/07/27/x7CZpnEi1chQG6D.png 1.5x, https://i.loli.net/2021/07/27/x7CZpnEi1chQG6D.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/x7CZpnEi1chQG6D.png"
+        title="image-20210727174947795" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/YbU1a295hFVDu7Z.png"
+        data-srcset="https://i.loli.net/2021/07/27/YbU1a295hFVDu7Z.png, https://i.loli.net/2021/07/27/YbU1a295hFVDu7Z.png 1.5x, https://i.loli.net/2021/07/27/YbU1a295hFVDu7Z.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/YbU1a295hFVDu7Z.png"
+        title="image-20210727174854920" /></p>
+<h1 id="参考">参考</h1>
+<ol>
+<li>Ameya Prabhu, Philip HS Torr, and Puneet K Dokania. Gdumb: A simple approach that questions our progress in continual learning. In <em>ECCV</em>, pages 524–540, 2020.</li>
+<li>Jialun Liu, Yifan Sun, Chuchu Han, Zhaopeng Dou, and Wenhui Li. Deep representation learning on long-tailed data: A learnable embedding augmentation perspective. In <em>CVPR</em>, pages 2967–2976, 2020.</li>
+<li>Hankook Lee, Sung Ju Hwang, and Jinwoo Shin. Self-supervised label augmentation via input transformations. In <em>ICML</em>, 2020.</li>
+<li>Revisiting Training Strategies and Generalization Performance in Deep Metric Learning</li>
+</ol>
+<h1 id="附录">附录</h1>
+<p>特征空间密度：$π_{ratio}(F) = π_{intra}(F)/π_{inter}(F)$，<a href="http://proceedings.mlr.press/v119/roth20a.html" target="_blank" rel="noopener noreffer">Roth et al. [4]</a> 提出并发现训练和测试分布之间发生相当大的变化时，增加的特征空间密度 $π_{ratio}$ 与更强的泛化有关。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-07-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy,self-supervised learning"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" data-title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/incremental-learning/">incremental learning</a>,&nbsp;<a href="/tags/rehearsal-strategy/">rehearsal strategy</a>,&nbsp;<a href="/tags/self-supervised-learning/">self-supervised learning</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0rainbow-memory-continual-learning-with-a-memory-of-diverse-samples/" class="prev" rel="prev" title="论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples"><i class="fas fa-angle-left fa-fw"></i>论文笔记——Rainbow Memory: Continual Learning with a Memory of Diverse Samples</a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">大猫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>
