@@ -4,7 +4,14 @@
         <link>https://capablecat.github.io/tags/incremental-learning/</link>
         <description>incremental learning - 标签 - 大猫的博客</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>krio_d@protonmail.com (大猫)</managingEditor>
-            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Tue, 27 Jul 2021 14:10:00 &#43;0800</lastBuildDate><atom:link href="https://capablecat.github.io/tags/incremental-learning/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Tue, 27 Jul 2021 20:10:00 &#43;0800</lastBuildDate><atom:link href="https://capablecat.github.io/tags/incremental-learning/" rel="self" type="application/rss+xml" /><item>
+    <title>论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning</title>
+    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/</link>
+    <pubDate>Tue, 27 Jul 2021 20:10:00 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/</guid>
+    <description><![CDATA[一、简介 本文发表于 CVPR 2021，随文代码见此。（本文是西交数学与统计学院发表的文章，数学方面比较硬核） 本文专注于连续训练时不访问之前的数据。本]]></description>
+</item><item>
     <title>论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning</title>
     <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/</link>
     <pubDate>Tue, 27 Jul 2021 14:10:00 &#43;0800</pubDate>
@@ -67,12 +74,5 @@
     <author>作者</author>
     <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/</guid>
     <description><![CDATA[简介 本文发表于 CVPR 2020，参考代码见此。 本文主要做了两方面工作：其一，分析了知识蒸馏（Knowing Distillation）在增量学习中实]]></description>
-</item><item>
-    <title>论文笔记——Large Scale Incremental Learning</title>
-    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/</link>
-    <pubDate>Thu, 22 Apr 2021 11:32:00 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0large-scale-incremental-learning/</guid>
-    <description><![CDATA[简介 本文发表于CVPR 2019，代码见此。 本文在回溯策略上同 iCaRL 一样遵循了 herding 策略，主要致力于解决 rehearsal strategy 中新旧类不平衡问题，提出在全连接层后面增加]]></description>
 </item></channel>
 </rss>

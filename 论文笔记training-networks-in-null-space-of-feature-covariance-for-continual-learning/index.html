@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning - 大猫的博客</title><meta name="Description" content="大猫的博客"><meta property="og:title" content="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning" />
+<meta property="og:description" content="一、简介 本文发表于 CVPR 2021，随文代码见此。（本文是西交数学与统计学院发表的文章，数学方面比较硬核） 本文专注于连续训练时不访问之前的数据。本" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" /><meta property="og:image" content="https://capablecat.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-07-27T20:10:00&#43;08:00" />
+<meta property="article:modified_time" content="2021-07-27T20:10:00&#43;08:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://capablecat.github.io/logo.png"/>
+
+<meta name="twitter:title" content="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning"/>
+<meta name="twitter:description" content="一、简介 本文发表于 CVPR 2021，随文代码见此。（本文是西交数学与统计学院发表的文章，数学方面比较硬核） 本文专注于连续训练时不访问之前的数据。本"/>
+<meta name="application-name" content="LoveIt">
+<meta name="apple-mobile-web-app-title" content="LoveIt"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" /><link rel="prev" href="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning",
+        "inLanguage": "zh-CN",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning\/"
+        },"genre": "posts","keywords": "incremental learning, rehearsal strategy, self-supervised learning","wordcount":  1560 ,
+        "url": "https:\/\/capablecat.github.io\/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning\/","datePublished": "2021-07-27T20:10:00+08:00","dateModified": "2021-07-27T20:10:00+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "大猫"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="fixed" header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="大猫的博客"></a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/"> 主页 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="大猫的博客"></a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                            <i class="fas fa-times-circle fa-fw"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        取消
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/" title="">主页</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">目录</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>大猫</a></span>&nbsp;<span class="post-category">收录于 <a href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><i class="far fa-folder fa-fw"></i>论文笔记——深度学习</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-27">2021-07-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1560 字&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="true">
+                <div class="details-summary toc-title">
+                    <span>目录</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一简介">一、简介</a></li>
+    <li><a href="#二-分析稳定性和可塑性">二、 分析稳定性和可塑性</a>
+      <ul>
+        <li><a href="#1-conditions-for-continual-learning">1. conditions for continual learning</a></li>
+      </ul>
+    </li>
+    <li><a href="#实验">实验</a></li>
+    <li><a href="#附录">附录</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="一简介">一、简介</h1>
+<p>本文发表于 <a href="https://arxiv.org/abs/2103.07113" target="_blank" rel="noopener noreffer">CVPR 2021</a>，随文代码<a href="https://arxiv.org/abs/2103.07113" target="_blank" rel="noopener noreffer">见此</a>。（本文是西交数学与统计学院发表的文章，数学方面比较硬核）</p>
+<p>本文专注于连续训练时<strong>不访问之前的数据</strong>。本文首先分别针对深度网络在持续学习中的稳定性和可塑性提出了<strong>两个理论条件</strong>。 基于它们设计了一种新的网络训练算法，称为 Adam-NSCL 用于持续学习，<strong>它迫使网络参数更新位于每个网络层的先前任务输入特征的零空间中</strong>，如 Fig1 所示。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/27/F91mdnszWoHDtT3.png"
+        data-srcset="https://i.loli.net/2021/07/27/F91mdnszWoHDtT3.png, https://i.loli.net/2021/07/27/F91mdnszWoHDtT3.png 1.5x, https://i.loli.net/2021/07/27/F91mdnszWoHDtT3.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/27/F91mdnszWoHDtT3.png"
+        title="image-20210727202940587" /></p>
+<p>输入特征的分层零空间可以建模为特征的非中心协方差的零空间，该协方差可以在学习每个任务后递增计算。由于保证零空间的存在过于严格，故本文用输入特征非中心协方差的最小奇异值对应的奇异向量跨越的子空间来近似每一层的零空间。本文将该策略嵌入到 Adam 优化算法中，将Adam生成的候选参数更新逐层投影到近似的零空间中。</p>
+<blockquote>
+<p><strong>输入特征分层零空间 （The layer-wise null space of input feature)</strong>	指的应该是特征图为零的位置</p>
+<p><strong>特征的非中心协方差</strong>	我们可以正常计算得到特征的协方差，并对其进行去中心化。本文用最小奇异值对应的奇异向量来近似</p>
+</blockquote>
+<p>总结而言，本文基于正则化思想，采取约束模型的参数更新的方式来保证模型的特征学习。结构上，所有任务共享同一个主干网络，但每个任务都有自己的分类器。 模型在相应的任务上训练后，分类器将被固定。（multi-head classifier）</p>
+<blockquote>
+<p>基于这种设计的增量学习算法显示的分割了不同任务的分类空间，从而避免特征空间的模糊所带来的麻烦。但这类设计的缺点也很明显——需要在推断时被告知 task-id，否则就需要额外设计判别器区分 task-id。前者很难在实际中生效（如果需要提供task-id来分割任务，为何不干脆训练一个针对新任务的模型呢？）；后者则再次面临特征模糊的问题，解决难度不亚于 single-head classifier</p>
+</blockquote>
+<h1 id="二-分析稳定性和可塑性">二、 分析稳定性和可塑性</h1>
+<h2 id="1-conditions-for-continual-learning">1. conditions for continual learning</h2>
+<p><strong>Condition 1 (stability).</strong> 	对于 $l = 1, · · · , L,$  当 $f$ 在任务 $T_t$ 上被训练时，$Δw^l_{t,s}$ 在每个训练步骤 $s$ 应该位于无中心特征协方差矩阵 $\overline{X}^l_{t−1}$ 的零空间中，即，</p>
+<p>$$\overline{\chi}^l_{t−1}∆w^l_{t,s} = 0. \quad(3)$$</p>
+<p>其中，$∆w^l_{t,s}$​表示 $s$​​ 阶段网络参数的变化量</p>
+<p><strong>Condition 2 (scalability).</strong>	假设网络 $f$​​​ 正在接受任务 $T_t$​​​ 训练，且 $g_{t,s}=\left{g^1_{t,s},&hellip;,g^L_{t,s}\right}$​​​ 表示在 $s$​​​ 阶段训练 $f$​​​ 经梯度下降算法生成的参数更新。$&lt;∆w_{t,s}, g_{t,s} &gt; &gt; 0$​​​​ 应该成立，其中 $&lt;·， ·&gt; $​​​​代表内积</p>
+<p>详细的数学推导这里就略过了，简单概括一下：condition 1 的内在逻辑是让参数的更新在特征的非中心协方差的零空间中，这样的好处是降低参数更新对于原特征的影响，从而保护稳定性（奇异值小的空间对原矩阵的影响较小）；condition 2 的 $&lt;.,.&gt;$​ 表明梯度更新方向与参数变化量相似，即梯度是朝着最小化损失的方向前进的，从而保护了伸缩性。</p>
+<p>又因为实际上并不能去衡量零空间，所以本文采取了 Algorithm 2 的近似方法。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/28/NDiBF9T3IqKUXQh.png"
+        data-srcset="https://i.loli.net/2021/07/28/NDiBF9T3IqKUXQh.png, https://i.loli.net/2021/07/28/NDiBF9T3IqKUXQh.png 1.5x, https://i.loli.net/2021/07/28/NDiBF9T3IqKUXQh.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/28/NDiBF9T3IqKUXQh.png"
+        title="image-20210728163302702" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/28/PsDJYGwKUVOZt4a.png"
+        data-srcset="https://i.loli.net/2021/07/28/PsDJYGwKUVOZt4a.png, https://i.loli.net/2021/07/28/PsDJYGwKUVOZt4a.png 1.5x, https://i.loli.net/2021/07/28/PsDJYGwKUVOZt4a.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/28/PsDJYGwKUVOZt4a.png"
+        title="image-20210728162732663" /></p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/28/kqgrotC6TwcZ4Ja.png"
+        data-srcset="https://i.loli.net/2021/07/28/kqgrotC6TwcZ4Ja.png, https://i.loli.net/2021/07/28/kqgrotC6TwcZ4Ja.png 1.5x, https://i.loli.net/2021/07/28/kqgrotC6TwcZ4Ja.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/28/kqgrotC6TwcZ4Ja.png"
+        title="image-20210728163609413" /></p>
+<h1 id="实验">实验</h1>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://i.loli.net/2021/07/28/1bxeDldV5npHOqk.png"
+        data-srcset="https://i.loli.net/2021/07/28/1bxeDldV5npHOqk.png, https://i.loli.net/2021/07/28/1bxeDldV5npHOqk.png 1.5x, https://i.loli.net/2021/07/28/1bxeDldV5npHOqk.png 2x"
+        data-sizes="auto"
+        alt="https://i.loli.net/2021/07/28/1bxeDldV5npHOqk.png"
+        title="image-20210728175604913" /></p>
+<blockquote>
+<p>相当硬核的一篇数学想机器学习论文，文章最大的特点就是数学层面的“假设、近似、推导”。核心还是正则化的思想，旨在约束模型参数。</p>
+<p>在我的理解里，文中提到的“特征的去中心协方差矩阵的零空间”中的“去中心”应该是修饰词，意为寻找最影响力最小的特征，所以就有了“零空间”的说法。因此也就有了本文提到的利用最小奇异值对应的向量来近似这个零空间。抓住“零空间影响力小”这一内核，那么本文的 insight 还是从参数约束的角度考虑。</p>
+</blockquote>
+<h1 id="附录">附录</h1>
+<p><a href="https://www.zhihu.com/question/22237507" target="_blank" rel="noopener noreffer"><strong>奇异值</strong></a>	矩阵的一种概念，一般通过<a href="https://baike.baidu.com/item/%E5%A5%87%E5%BC%82%E5%80%BC%E5%88%86%E8%A7%A3/4968432" target="_blank" rel="noopener noreffer">奇异值分解</a>定理求得。<strong>奇异值往往对应着矩阵中隐含的重要信息，且重要性和奇异值大小正相关。每个矩阵</strong> $A$​ <strong>都可以表示为一系列秩为1的“小矩阵”之和，而奇异值则衡量了这些“小矩阵”对于</strong> $A$ <strong>的权重</strong>。</p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>更新于 2021-07-27</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"><span>
+                            <a class="link-to-markdown" href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/index.md" target="_blank">阅读原始文档</a>
+                        </span></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning" data-via="xxxx" data-hashtags="incremental learning,rehearsal strategy,self-supervised learning"><i class="fab fa-twitter fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-hashtag="incremental learning"><i class="fab fa-facebook-square fa-fw"></i></a><a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning" data-web><i class="fab fa-whatsapp fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning"><i data-svg-src="/lib/simple-icons/icons/line.min.svg"></i></a><a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning"><i class="fab fa-weibo fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg"></i></a><a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning" data-description=""><i class="fab fa-blogger fa-fw"></i></a><a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/" data-title="论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning"><i class="fab fa-evernote fa-fw"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/incremental-learning/">incremental learning</a>,&nbsp;<a href="/tags/rehearsal-strategy/">rehearsal strategy</a>,&nbsp;<a href="/tags/self-supervised-learning/">self-supervised learning</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/" class="prev" rel="prev" title="论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning"><i class="fas fa-angle-left fa-fw"></i>论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning</a></div>
+</div>
+<div id="comments"></div></article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.83.1">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">大猫</a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/katex/copy-tex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/autocomplete/autocomplete.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript" src="/lib/sharer/sharer.min.js"></script><script type="text/javascript" src="/lib/katex/katex.min.js"></script><script type="text/javascript" src="/lib/katex/auto-render.min.js"></script><script type="text/javascript" src="/lib/katex/copy-tex.min.js"></script><script type="text/javascript" src="/lib/katex/mhchem.min.js"></script><script type="text/javascript" src="/lib/cookieconsent/cookieconsent.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":10},"comment":{},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrIndexURL":"/index.json","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"lunr"}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

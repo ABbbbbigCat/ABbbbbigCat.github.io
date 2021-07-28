@@ -4,9 +4,16 @@
         <link>https://capablecat.github.io/</link>
         <description>大猫的博客</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>krio_d@protonmail.com (大猫)</managingEditor>
-            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Tue, 27 Jul 2021 14:10:00 &#43;0800</lastBuildDate>
+            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Tue, 27 Jul 2021 20:10:00 &#43;0800</lastBuildDate>
             <atom:link href="https://capablecat.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning</title>
+    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/</link>
+    <pubDate>Tue, 27 Jul 2021 20:10:00 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/</guid>
+    <description><![CDATA[一、简介 本文发表于 CVPR 2021，随文代码见此。（本文是西交数学与统计学院发表的文章，数学方面比较硬核） 本文专注于连续训练时不访问之前的数据。本]]></description>
+</item><item>
     <title>论文笔记——Prototype Augmentation and Self-Supervision for Incremental Learning</title>
     <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0prototype-augmentation-and-self-supervision-for-incremental-learning/</link>
     <pubDate>Tue, 27 Jul 2021 14:10:00 &#43;0800</pubDate>
@@ -69,12 +76,5 @@
     <author>作者</author>
     <guid>https://capablecat.github.io/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0%E9%A9%AC%E6%8B%89%E8%BD%A6%E7%AE%97%E6%B3%95/</guid>
     <description><![CDATA[例题：leetcode-5 1. 引子 在一串字符串里找出最长回文串的问题，可以通过暴力求解法来解决，其时间复杂度为O(n^2)，这当然不会很快。算]]></description>
-</item><item>
-    <title>OpenGL学习笔记——高级OpenGL</title>
-    <link>https://capablecat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/</link>
-    <pubDate>Wed, 26 May 2021 03:44:19 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://capablecat.github.io/opengl%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E9%AB%98%E7%BA%A7opengl/</guid>
-    <description><![CDATA[1. 深度测试 深度测试通过衡量物体的深度缓冲（Depth Buffer, 物体与视口的差距）决定了最后渲染的图像。OpenGL支持八种深度测试函数，其中最长使用]]></description>
 </item></channel>
 </rss>
