@@ -47,7 +47,7 @@ $$\left\{\theta_t,\phi_t\right\}=\arg min_{\theta_t,\phi_t}\left\{L_{t,ce}+L_{t,
 
 ## 2. SSL based Label Augmentaion
 
-受 [3] 的启发，本文简单地通过基于 SSL 扩充当前类来学习统一模型。 具体来说，对于每个类，将其训练数据旋转 90、180 和 270 度以生成 3 个新类，将原始 K 类问题扩展为新的 4K 类问题：
+受 [3] 的启发，本文简单地通过基于 SSL 扩充当前类来学习统一模型。 具体来说，对于每个类，将其训练数据旋转 90、180 和 270 度以生成 3 个新类（预测图片旋转的角度），将原始 K 类问题扩展为新的 4K 类问题：
 
 $$X_t^{'}=rotate(X_t,\theta),\quad \theta \in \left\{90,180,27\right\}$$
 
@@ -62,6 +62,10 @@ $$X_t^{'}=rotate(X_t,\theta),\quad \theta \in \left\{90,180,27\right\}$$
 
 
 **PASS**	$L_{t,total}=L_{t,ce}+\lambda*L_{t,protAug}+\gamma*L_{t,kd}$
+
+
+
+![image-20210802012219909](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210802012219909.png)
 
 
 
