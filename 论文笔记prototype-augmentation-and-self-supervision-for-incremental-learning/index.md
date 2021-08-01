@@ -65,7 +65,7 @@ $$X_t^{'}=rotate(X_t,\theta),\quad \theta \in \left\{90,180,27\right\}$$
 
 
 
-![image-20210802012219909](C:/Users/25221/AppData/Roaming/Typora/typora-user-images/image-20210802012219909.png)
+![image-20210802012219909](https://i.loli.net/2021/08/02/O2qaoLjVh638sXf.png)
 
 
 
