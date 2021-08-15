@@ -4,7 +4,14 @@
         <link>https://capablecat.github.io/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</link>
         <description>论文笔记——深度学习 - 分类 - 大猫的博客</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>krio_d@protonmail.com (大猫)</managingEditor>
-            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Tue, 27 Jul 2021 20:10:00 &#43;0800</lastBuildDate><atom:link href="https://capablecat.github.io/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="self" type="application/rss+xml" /><item>
+            <webMaster>krio_d@protonmail.com (大猫)</webMaster><lastBuildDate>Sun, 15 Aug 2021 12:10:00 &#43;0800</lastBuildDate><atom:link href="https://capablecat.github.io/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" rel="self" type="application/rss+xml" /><item>
+    <title>论文笔记——Self-Promoted Prototype Refinement for Few-Shot Class-Incremental Learning</title>
+    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0self-promoted-prototype-refinement-for-few-shot-class-incremental-learning/</link>
+    <pubDate>Sun, 15 Aug 2021 12:10:00 &#43;0800</pubDate>
+    <author>作者</author>
+    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0self-promoted-prototype-refinement-for-few-shot-class-incremental-learning/</guid>
+    <description><![CDATA[一、简介 本文发表于 CVPR 2021，暂时没有开源代码。 本文研究的问题是 FSCIL，即 few-shot incremental learning。与传统的增量学习问题相比，FSCIL 还面]]></description>
+</item><item>
     <title>论文笔记——Training Networks in Null Space of Feature Covariance for Continual Learning</title>
     <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0training-networks-in-null-space-of-feature-covariance-for-continual-learning/</link>
     <pubDate>Tue, 27 Jul 2021 20:10:00 &#43;0800</pubDate>
@@ -67,12 +74,5 @@
     <author>作者</author>
     <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0learning-a-unified-classifier-incrementally-via-rebalancing/</guid>
     <description><![CDATA[简介 本文发表于CVPR 2019，复现代码见此。 LUCIR同样是致力于缓解rehearsal中不平衡问题，如 Fig.1 所示，本文指出不平衡的数据主要带]]></description>
-</item><item>
-    <title>论文笔记——Maintaining Discrimination and Fairness in Class Incremental Learning</title>
-    <link>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/</link>
-    <pubDate>Wed, 12 May 2021 08:32:00 &#43;0800</pubDate>
-    <author>作者</author>
-    <guid>https://capablecat.github.io/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0maintaining-discrimination-and-fairness/</guid>
-    <description><![CDATA[简介 本文发表于 CVPR 2020，参考代码见此。 本文主要做了两方面工作：其一，分析了知识蒸馏（Knowing Distillation）在增量学习中实]]></description>
 </item></channel>
 </rss>
