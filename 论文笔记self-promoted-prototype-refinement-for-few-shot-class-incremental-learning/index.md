@@ -9,7 +9,7 @@
 
 回到本文，本文首先是指出传统的增量学习算法对于 FSCIL 是无力的，因为 FSCIL 中新类样本少，缺乏足够多的监督指标 。如图 1 所示，典型的增量学习方法 [iCaRL, EEIL] 扩展的表示空间代表性不足，因此与旧类相比，新类通常表现出不足的聚合。 另外，由于新的类样本不足，用于分类的原型在增量学习后容易与其他类混淆，这大大恶化了后续任务。
 
-![image-20210815123007085](../AppData/Roaming/Typora/typora-user-images/image-20210815123007085.png)
+![image-20210815123007085](https://i.loli.net/2021/08/16/VbRalneN465WLuS.png)
 
 为了缓解上述问题，首先，本文采用随机情节选择策略（RESS, random episode selection strategy）通过强制特征适应各种随机模拟的增量过程来增强特征表示的可扩展性；其次，引入了一种自我提升的原型细化机制（SPPR, self-promoted prototype refinement mechanism），通过利用新类样本和旧类原型的表示之间的关系矩阵来更新现有原型。 这增强了新类的表达能力，同时保留了旧类之间的关系特征。 特别地，提出了一种称为动态关系投影的新模块，将新类样本的表示和旧类的原型映射到相同的嵌入空间中，并通过使用两个嵌入的距离度量计算它们之间的**投影矩阵**空间。 我们将矩阵作为原型细化的权重来引导原型向保持现有知识和增强新类的可辨别性的动态变化。
 
@@ -17,7 +17,7 @@
 
 # 二、方法
 
-![image-20210815123854725](../AppData/Roaming/Typora/typora-user-images/image-20210815123854725.png)
+![image-20210815123854725](https://i.loli.net/2021/08/16/icUfDj9ZImVeG23.png)
 
 **算法流程**	base task 正常训练；IL task 中，每次迭代新数据直接输⼊进模型。⽽对于旧数据，每次从其中挑选 N-way K-shot 样本计算它们在当前CNN参数下的原型特征，然后采⽤⽂中提到的 dynamic Relation  Projection ⽅法把被本次迭代新计算得到的 $C$​ 个类的原型特征和原来未选择到的 N-C 个类的特征结合起来，构建相关矩阵，转换之后得到⼀个 $class$ x $dimension$ 的矩阵，和新类提取到的特征⼀起经过 softmax 层算损失。
 
@@ -37,11 +37,11 @@ Table 1 准确率低时因为本文仅仅只训练了 70 epochs 就中止了。�
 
 Fig 5 中星号代表将相应的 CIL 方法应用于 FSCIL 任务的结果，TOPIC 和 TOPIC-MML 则本来就是设计来应对 FSCIL 问题的方法。（粉色折线展示了方法用于常规增量的实验结果）
 
-![image-20210815124545356](../AppData/Roaming/Typora/typora-user-images/image-20210815124545356.png)
+![image-20210815124545356](https://i.loli.net/2021/08/16/zvYWBHQs42nfudr.png)
 
-![image-20210815124918765](../AppData/Roaming/Typora/typora-user-images/image-20210815124918765.png)
+![image-20210815124918765](https://i.loli.net/2021/08/16/Ed6pO89XBPs4oZt.png)
 
-![image-20210815125008273](../AppData/Roaming/Typora/typora-user-images/image-20210815125008273.png)
+![image-20210815125008273](https://i.loli.net/2021/08/16/7reFWwNObyZi3aH.png)
 
 
 
